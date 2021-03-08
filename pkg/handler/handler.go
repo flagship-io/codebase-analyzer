@@ -8,6 +8,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// AnalyzeCode loads and checks environment variables, extract flags from code and send flag infos to Flagship API
 func AnalyzeCode() {
 	err := godotenv.Load()
 	if err != nil {
