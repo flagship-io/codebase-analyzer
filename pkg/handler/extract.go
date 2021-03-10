@@ -19,7 +19,7 @@ func ExtractFlagsInfo(dir string, toExclude []string) ([]model.FileSearchResult,
 	resultsChan := make(chan model.FileSearchResult)
 
 	for _, f := range filePaths {
-		go files.SearchFiles(f, []string{}, resultsChan)
+		go files.SearchFiles(f, resultsChan)
 	}
 
 	for range filePaths {

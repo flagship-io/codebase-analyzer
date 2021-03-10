@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"gitlab/canarybay/aws/integration/code-analyser/internal/files/api"
 	"log"
 	"os"
 	"strings"
@@ -9,7 +10,7 @@ import (
 )
 
 // AnalyzeCode loads and checks environment variables, extract flags from code and send flag infos to Flagship API
-func AnalyzeCode() {
+func AnalyzeCode() error {
 	err := godotenv.Load()
 	if err != nil {
 		log.Printf("Error loading .env file : %v", err)
@@ -35,6 +36,8 @@ func AnalyzeCode() {
 		dir = "."
 	}
 
+	// TODO : check that ENVIRONMENT_ID variation is set
+
 	results, err := ExtractFlagsInfo(dir, toExclude)
 
 	if err != nil {
@@ -45,4 +48,6 @@ func AnalyzeCode() {
 		log.Printf("Scanned file %s and found %d flag usages", r.File, len(r.Results))
 	}
 
+	err = api.SendFlagsToAPI(results)
+	return err
 }

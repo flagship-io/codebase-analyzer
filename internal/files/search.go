@@ -23,10 +23,11 @@ var regexes = map[string]languageRegex{
 		},
 		flagKeyRegex: `['"]?key['"]?\s*\:\s*['"](.*)['"]`,
 	},
+	// TODO: add all languages
 }
 
 // SearchFiles search code pattern in files and return results and error
-func SearchFiles(path string, patterns []string, resultChannel chan model.FileSearchResult) {
+func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 	// Read file contents
 	fileContent, err := ioutil.ReadFile(path)
 	if err != nil {
