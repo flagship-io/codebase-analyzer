@@ -24,6 +24,11 @@ func AnalyzeCode() error {
 
 	// Environment variables to set by the client
 
+	repoURL := os.Getenv("FLAGSHIP_TOKEN")
+	if repoURL == "" {
+		log.Fatal("Missing required environment variable FLAGSHIP_TOKEN")
+	}
+
 	repoURL := os.Getenv("REPOSITORY_URL")
 	if repoURL == "" {
 		log.Fatal("Missing required environment variable REPOSITORY_URL")
