@@ -16,9 +16,22 @@ func AnalyzeCode() error {
 		log.Printf("Error loading .env file : %v", err)
 	}
 
+	// Environment variables for the prcject
+
+	if os.Getenv("FS_API") == "" {
+		os.Setenv("FS_API", "https://api.flagship.io")
+	}
+
+	// Environment variables to set by the client
+
 	repoURL := os.Getenv("REPOSITORY_URL")
 	if repoURL == "" {
 		log.Fatal("Missing required environment variable REPOSITORY_URL")
+	}
+
+	envId := os.Getenv("ENVIRONMENT_ID")
+	if envId == "" {
+		log.Fatal("Missing required environment variable ENVIRONMENT_ID")
 	}
 
 	repoBranch := os.Getenv("REPOSITORY_BRANCH")
@@ -36,8 +49,6 @@ func AnalyzeCode() error {
 		dir = "."
 	}
 
-	// TODO : check that ENVIRONMENT_ID variation is set
-
 	results, err := ExtractFlagsInfo(dir, toExclude)
 
 	if err != nil {
@@ -48,6 +59,6 @@ func AnalyzeCode() error {
 		log.Printf("Scanned file %s and found %d flag usages", r.File, len(r.Results))
 	}
 
-	err = api.SendFlagsToAPI(results)
+	err = api.SendFlagsToAPI(results, envId)
 	return err
 }
