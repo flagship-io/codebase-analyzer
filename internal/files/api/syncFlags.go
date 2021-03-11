@@ -59,6 +59,11 @@ func callApi(envId string, flagInfos []FlagInfo) {
 		log.Fatal("Error in request execution", err.Error())
 	}
 
-	fmt.Println("Response :", resp)
+	if resp.StatusCode == 200 {
+		fmt.Println("Success")
+	} else {
+		fmt.Println("Error", resp.StatusCode)
+	}
+
 	defer resp.Body.Close()
 }
