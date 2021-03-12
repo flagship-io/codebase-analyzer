@@ -34,8 +34,8 @@ func AnalyzeCode() error {
 		log.Fatal("Missing required environment variable REPOSITORY_URL")
 	}
 
-	envId := os.Getenv("ENVIRONMENT_ID")
-	if envId == "" {
+	envID := os.Getenv("ENVIRONMENT_ID")
+	if envID == "" {
 		log.Fatal("Missing required environment variable ENVIRONMENT_ID")
 	}
 
@@ -44,10 +44,10 @@ func AnalyzeCode() error {
 		repoBranch = "master"
 	}
 
-	toExclude := []string{}
-	if os.Getenv("FILES_TO_EXCLUDE") != "" {
-		toExclude = strings.Split(os.Getenv("FILES_TO_EXCLUDE"), ",")
+	if os.Getenv("FILES_TO_EXCLUDE") == "" {
+		os.Setenv("FILES_TO_EXCLUDE", ".git")
 	}
+	toExclude := strings.Split(os.Getenv("FILES_TO_EXCLUDE"), ",")
 
 	dir := os.Getenv("DIRECTORY")
 	if dir == "" {
@@ -64,6 +64,6 @@ func AnalyzeCode() error {
 		log.Printf("Scanned file %s and found %d flag usages", r.File, len(r.Results))
 	}
 
-	err = api.SendFlagsToAPI(results, envId)
+	err = api.SendFlagsToAPI(results, envID)
 	return err
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gitlab/canarybay/aws/integration/code-analyser/internal/files/model"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -68,6 +69,11 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 
 		// Find the key name in the flag code part
 		flagKeyResults := keyRegex.FindStringSubmatch(submatch)
+		if len(flagKeyResults) < 2 {
+			log.Printf("Did not find the flag key in code %s", submatch)
+			continue
+		}
+
 		lineNumber := getLineFromPos(string(fileContent), flagResult[0])
 		results = append(results, model.SearchResult{
 			FlagKey:     flagKeyResults[1],

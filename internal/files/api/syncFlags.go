@@ -36,13 +36,13 @@ func SendFlagsToAPI(results []model.FileSearchResult, envId string) (err error) 
 		}
 	}
 
-	callApi(envId, flagInfos)
+	err = callAPI(envId, flagInfos)
 
 	return err
 }
 
-func callApi(envId string, flagInfos []FlagInfo) {
-	syncFlagsRoute := os.Getenv("FS_API") + "/account_environments/" + envId + "/flag_usages"
+func callAPI(envID string, flagInfos []FlagInfo) error {
+	syncFlagsRoute := fmt.Sprintf("%s/account_environments/%s/flag_usages", os.Getenv("FS_API"), envID)
 
 	json, _ := json.Marshal(flagInfos)
 
@@ -56,14 +56,13 @@ func callApi(envId string, flagInfos []FlagInfo) {
 	req.Header.Set("Authorization", "Bearer "+os.Getenv("FLAGSHIP_TOKEN"))
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Fatal("Error in request execution", err.Error())
+		return err
 	}
 
-	if resp.StatusCode == 200 {
-		fmt.Println("Success")
-	} else {
-		fmt.Println("Error", resp.StatusCode)
+	if resp.StatusCode != 200 {
+		return fmt.Errorf("Error when calling Flagship API. Got status %s", resp.Status)
 	}
 
 	defer resp.Body.Close()
+	return nil
 }
