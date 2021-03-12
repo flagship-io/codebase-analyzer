@@ -70,7 +70,7 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 		// Find the key name in the flag code part
 		flagKeyResults := keyRegex.FindStringSubmatch(submatch)
 		if len(flagKeyResults) < 2 {
-			log.Printf("Did not find the flag key in code %s", submatch)
+			log.Printf("Did not find the flag key in file %s. Code : %s", path, submatch)
 			continue
 		}
 
