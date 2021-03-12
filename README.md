@@ -1,6 +1,3 @@
-# WARNING
-This is a WIP project. Do not use in production.
-
 # Run
 
 docker run -v $(pwd)/your_repo:/your_repo -e FLAGSHIP_TOKEN=your_token -e REPOSITORY_URL=https://gitlab.com/org/repo -e REPOSITORY_BRANCH=master -e DIRECTORY=/your_repo flagshipio/code-analyzer
