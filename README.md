@@ -4,7 +4,22 @@ Flagship Code Analyzer is a CLI and a docker image that can analyze your codebas
 
 # Run
 
-docker run -v $(pwd)/your_repo:/your_repo -e FLAGSHIP_TOKEN=your_token -e REPOSITORY_URL=https://gitlab.com/org/repo -e REPOSITORY_BRANCH=master -e DIRECTORY=/your_repo flagshipio/code-analyzer
+## With CLI
+
+```sh
+export FLAGSHIP_TOKEN=your_token
+export ENVIRONMENT_ID=your_env_id
+export REPOSITORY_URL=https://gitlab.com/org/repo
+export REPOSITORY_BRANCH=master
+export DIRECTORY=./
+./code-analyzer
+```
+
+## With docker
+
+```sh
+docker run -v $(pwd)/your_repo:/your_repo -e FLAGSHIP_TOKEN=your_token -e ENVIRONMENT_ID=your_env_id -e REPOSITORY_URL=https://gitlab.com/org/repo -e REPOSITORY_BRANCH=master -e DIRECTORY=/your_repo flagshipio/code-analyzer
+```
 
 # Environment variables
 
