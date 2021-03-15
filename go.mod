@@ -1,4 +1,4 @@
-module gitlab/canarybay/aws/integration/code-analyser
+module github/flagship-io/code-analyzer
 
 go 1.16
 

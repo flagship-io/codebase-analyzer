@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"gitlab/canarybay/aws/integration/code-analyser/internal/files"
-	"gitlab/canarybay/aws/integration/code-analyser/internal/files/model"
+	"github/flagship-io/code-analyzer/internal/files"
+	"github/flagship-io/code-analyzer/internal/files/model"
 	"log"
 )
 

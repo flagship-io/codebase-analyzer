@@ -2,7 +2,7 @@ package files
 
 import (
 	"fmt"
-	"gitlab/canarybay/aws/integration/code-analyser/internal/files/model"
+	"github/flagship-io/code-analyzer/internal/files/model"
 	"io/ioutil"
 	"log"
 	"os"

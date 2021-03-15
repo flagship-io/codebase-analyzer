@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"gitlab/canarybay/aws/integration/code-analyser/internal/files/model"
+	"github/flagship-io/code-analyzer/internal/files/model"
 	"log"
 	"net/http"
 	"os"
@@ -53,7 +53,7 @@ func callAPI(envID string, flagInfos []FlagInfo) error {
 		log.Fatal("Error in request", err.Error())
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+os.Getenv("FLAGSHIP_TOKEN"))
+	req.Header.Set("X-API-TOKEN", os.Getenv("FLAGSHIP_TOKEN"))
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return err

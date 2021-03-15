@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gitlab/canarybay/aws/integration/code-analyser/pkg/handler"
+	"github/flagship-io/code-analyzer/pkg/handler"
 	"log"
 )
 
