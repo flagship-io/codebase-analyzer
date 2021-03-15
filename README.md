@@ -25,13 +25,13 @@ docker run -v $(pwd)/your_repo:/your_repo -e FLAGSHIP_TOKEN=your_token -e ENVIRO
 
 ## Flagship token (required)
 
-This environment variable contains the Flagship token necessary to send Flag infos to the Flagship Platform
+This environment variable contains the Flagship token necessary to send flags infos to the Flagship Platform
 
 - example : `FLAGSHIP_TOKEN=your_token`
 
 ## Environment ID (required)
 
-This environment variable contains the Flagship environment ID to synchronize flag usage for the matching environment
+This environment variable contains the Flagship environment ID to synchronize flags usage for the matching environment
 
 - example : `ENVIRONMENT_ID=your_flagship_env_id`
 
@@ -65,7 +65,7 @@ This environment variable should contain the directory you want to analyse
 
 # Use with Gitlab CI
 
-You can use the code analyzer to push flag references to your Flagship environment when code is pushed to a specific branch or tag
+You can use the code analyzer to push flags references to your Flagship environment when code is pushed to a specific branch or tag
 
 ```yaml
 analyze_flag_references:
