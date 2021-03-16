@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github/flagship-io/code-analyzer/internal/files/model"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -59,8 +60,9 @@ func callAPI(envID string, flagInfos []FlagInfo) error {
 		return err
 	}
 
-	if resp.StatusCode != 200 {
-		return fmt.Errorf("Error when calling Flagship API. Got status %s", resp.Status)
+	if resp.StatusCode > 204 {
+		body, _ := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf("Error when calling Flagship API. Got status %s, response: %s", resp.Status, body)
 	}
 
 	defer resp.Body.Close()
