@@ -10,9 +10,10 @@ type FileSearchResult struct {
 
 // SearchResult represents the result of a code pattern search in a file
 type SearchResult struct {
-	LineNumber       int
-	CodeLines        string
-	CodeLineURL      string
-	FlagKey          string
-	FlagDefaultValue string
+	LineNumber         int
+	CodeLines          string
+	CodeLinesHighlight int
+	CodeLineURL        string
+	FlagKey            string
+	FlagDefaultValue   string
 }

@@ -54,6 +54,10 @@ func AnalyzeCode() error {
 		dir = "."
 	}
 
+	if os.Getenv("NB_CODE_LINES_EDGE") == "" {
+		os.Setenv("NB_CODE_LINES_EDGES", "1")
+	}
+
 	results, err := ExtractFlagsInfo(dir, toExclude)
 
 	if err != nil {

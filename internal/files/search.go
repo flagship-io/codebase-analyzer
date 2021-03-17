@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"strconv"
 )
 
 type languageRegex struct {
@@ -23,6 +24,24 @@ var regexes = map[string]languageRegex{
 			`(?s)\.getModifications\(.*?\)`,
 		},
 		flagKeyRegex: `['"]?key['"]?\s*\:\s*['"](.*)['"]`,
+	},
+	".go": {
+		flagRegexes: []string{
+			`(?s)\.GetModification(String|Number|Bool|Object|Array)\(.*?\)`,
+		},
+		flagKeyRegex: `s*['"](.*?)['"]`,
+	},
+	".py": {
+		flagRegexes: []string{
+			`(?s)\.get_modification\(.*?\)`,
+		},
+		flagKeyRegex: `s*['"](.*?)['"]`,
+	},
+	".java": {
+		flagRegexes: []string{
+			`(?s)\.getModification\(.*?\)`,
+		},
+		flagKeyRegex: `s*['"](.*?)['"]`,
 	},
 	// TODO: add all languages
 }
@@ -66,6 +85,10 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 
 		// Extract the flag code part
 		submatch := string(fileContent[flagResult[0]:flagResult[1]])
+		// Extract the code with a certain number of lines
+		firstLineIndex := getNextLineIndexFromPosition(string(fileContent), flagResult[0], true);
+		lastLineIndex := getNextLineIndexFromPosition(string(fileContent), flagResult[1], false);
+		code := strings.TrimSpace(string(fileContent[firstLineIndex:lastLineIndex]))
 
 		// Find the key name in the flag code part
 		flagKeyResults := keyRegex.FindStringSubmatch(submatch)
@@ -77,7 +100,8 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 		lineNumber := getLineFromPos(string(fileContent), flagResult[0])
 		results = append(results, model.SearchResult{
 			FlagKey:     flagKeyResults[1],
-			CodeLines:   strings.TrimSpace(submatch),
+			CodeLines:   code,
+			CodeLinesHighlight: getLineFromPos(code, strings.Index(code, submatch)),
 			CodeLineURL: getCodeURL(path, &lineNumber),
 			// Get line number of the code
 			LineNumber: lineNumber,
@@ -105,6 +129,39 @@ func getCodeURL(filePath string, line *int) string {
 		lineAnchor = fmt.Sprintf("#L%d", *line)
 	}
 	return fmt.Sprintf("%s%s-/blob/%s/%s%s", repositoryURL, repositorySep, repositoryBranch, filePath, lineAnchor)
+}
+
+func getNextLineIndexFromPosition(input string, indexPosition int, topDirection bool) int {
+	i := indexPosition
+	n := 0
+	e, _ := strconv.Atoi(os.Getenv("NB_CODE_LINES_EDGE"))
+	for {
+		// to top or bottom
+		if topDirection {
+			i--
+		} else {
+			i++
+		}
+		
+		// edge cases
+		if i <= 0 {
+			return 0
+		}
+		if i >= len(input) - 1 {
+			return len(input) - 1
+		}
+
+		// if new line
+		if input[i] == '\n' {
+			n++
+		} else {
+			continue
+		}
+
+		if n == e {
+			return i
+		}
+	}
 }
 
 func getLineFromPos(input string, indexPosition int) int {
