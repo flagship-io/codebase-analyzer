@@ -58,6 +58,7 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 		}
 		return
 	}
+	fileContentStr := strings.ReplaceAll(string(fileContent), "\r\n", "\n")
 
 	// Get file extension to choose matching regex
 	ext := filepath.Ext(path)
@@ -77,18 +78,18 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 	for _, flagRegexString := range regexes.flagRegexes {
 		// Find all flag code occurences within file
 		flagRegex := regexp.MustCompile(flagRegexString)
-		flagResults = append(flagResults, flagRegex.FindAllStringIndex(string(fileContent), -1)...)
+		flagResults = append(flagResults, flagRegex.FindAllStringIndex(fileContentStr, -1)...)
 	}
 
 	for _, flagResult := range flagResults {
 		keyRegex := regexp.MustCompile(regexes.flagKeyRegex)
 
 		// Extract the flag code part
-		submatch := string(fileContent[flagResult[0]:flagResult[1]])
+		submatch := fileContentStr[flagResult[0]:flagResult[1]]
 		// Extract the code with a certain number of lines
-		firstLineIndex := getNextLineIndexFromPosition(string(fileContent), flagResult[0], true);
-		lastLineIndex := getNextLineIndexFromPosition(string(fileContent), flagResult[1], false);
-		code := strings.TrimSpace(string(fileContent[firstLineIndex:lastLineIndex]))
+		firstLineIndex := getSurroundingLineIndex(fileContentStr, flagResult[0], true);
+		lastLineIndex := getSurroundingLineIndex(fileContentStr, flagResult[1], false);
+		code := strings.TrimSpace(fileContentStr[firstLineIndex:lastLineIndex])
 
 		// Find the key name in the flag code part
 		flagKeyResults := keyRegex.FindStringSubmatch(submatch)
@@ -97,7 +98,7 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 			continue
 		}
 
-		lineNumber := getLineFromPos(string(fileContent), flagResult[0])
+		lineNumber := getLineFromPos(fileContentStr, flagResult[0])
 		results = append(results, model.SearchResult{
 			FlagKey:     flagKeyResults[1],
 			CodeLines:   code,
@@ -131,7 +132,7 @@ func getCodeURL(filePath string, line *int) string {
 	return fmt.Sprintf("%s%s-/blob/%s/%s%s", repositoryURL, repositorySep, repositoryBranch, filePath, lineAnchor)
 }
 
-func getNextLineIndexFromPosition(input string, indexPosition int, topDirection bool) int {
+func getSurroundingLineIndex(input string, indexPosition int, topDirection bool) int {
 	i := indexPosition
 	n := 0
 	e, _ := strconv.Atoi(os.Getenv("NB_CODE_LINES_EDGES"))
