@@ -99,10 +99,11 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 		}
 
 		lineNumber := getLineFromPos(fileContentStr, flagResult[0])
+		codeLineHighlight := getLineFromPos(code, strings.Index(code, submatch)) + getLineFromPos(submatch, strings.Index(submatch, flagKeyResults[1])) - 1
 		results = append(results, model.SearchResult{
 			FlagKey:     flagKeyResults[1],
 			CodeLines:   code,
-			CodeLineHighlight: getLineFromPos(code, strings.Index(code, submatch)),
+			CodeLineHighlight: codeLineHighlight,
 			CodeLineURL: getCodeURL(path, &lineNumber),
 			// Get line number of the code
 			LineNumber: lineNumber,
