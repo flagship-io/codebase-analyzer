@@ -54,7 +54,7 @@ func AnalyzeCode() error {
 		dir = "."
 	}
 
-	if os.Getenv("NB_CODE_LINES_EDGE") == "" {
+	if os.Getenv("NB_CODE_LINES_EDGES") == "" {
 		os.Setenv("NB_CODE_LINES_EDGES", "1")
 	}
 

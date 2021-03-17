@@ -134,7 +134,7 @@ func getCodeURL(filePath string, line *int) string {
 func getNextLineIndexFromPosition(input string, indexPosition int, topDirection bool) int {
 	i := indexPosition
 	n := 0
-	e, _ := strconv.Atoi(os.Getenv("NB_CODE_LINES_EDGE"))
+	e, _ := strconv.Atoi(os.Getenv("NB_CODE_LINES_EDGES"))
 	for {
 		// to top or bottom
 		if topDirection {
