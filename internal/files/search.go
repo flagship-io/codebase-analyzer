@@ -89,7 +89,7 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 		// Extract the code with a certain number of lines
 		firstLineIndex := getSurroundingLineIndex(fileContentStr, flagResult[0], true);
 		lastLineIndex := getSurroundingLineIndex(fileContentStr, flagResult[1], false);
-		code := strings.TrimSpace(fileContentStr[firstLineIndex:lastLineIndex])
+		code := fileContentStr[firstLineIndex:lastLineIndex]
 
 		// Find the key name in the flag code part
 		flagKeyResults := keyRegex.FindStringSubmatch(submatch)
@@ -143,12 +143,6 @@ func getSurroundingLineIndex(input string, indexPosition int, topDirection bool)
 		} else {
 			i++
 		}
-
-		if n == e && topDirection {
-			return i
-		} else if n == e {
-			return i-1
-		}
 		
 		// edge cases
 		if i <= 0 {
@@ -158,8 +152,14 @@ func getSurroundingLineIndex(input string, indexPosition int, topDirection bool)
 			return len(input)
 		}
 
-		// if new line
+		// if new line, in the top direction we don't wan't the first \n in the code
 		if input[i] == '\n' {
+			if n == e {
+				if (topDirection) {
+					return i+1
+				}
+				return i
+			}
 			n++
 		} else {
 			continue
