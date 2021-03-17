@@ -1,0 +1,3 @@
+test: SHELL:=/bin/bash
+test:
+	TEST=1 go test -cover -v ./internal/... ./pkg/...

@@ -143,13 +143,19 @@ func getSurroundingLineIndex(input string, indexPosition int, topDirection bool)
 		} else {
 			i++
 		}
+
+		if n == e && topDirection {
+			return i
+		} else if n == e {
+			return i-1
+		}
 		
 		// edge cases
 		if i <= 0 {
 			return 0
 		}
 		if i >= len(input) - 1 {
-			return len(input) - 1
+			return len(input)
 		}
 
 		// if new line
@@ -157,10 +163,6 @@ func getSurroundingLineIndex(input string, indexPosition int, topDirection bool)
 			n++
 		} else {
 			continue
-		}
-
-		if n == e {
-			return i
 		}
 	}
 }
