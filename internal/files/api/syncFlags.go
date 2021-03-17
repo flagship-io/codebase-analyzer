@@ -13,12 +13,13 @@ import (
 
 // FlagInfo represent a flag code info sent to the Flagship API
 type FlagInfo struct {
-	FlagKey          string `json:"flagKey"`
-	RepositoryURL    string `json:"repositoryUrl"`
-	RepositoryBranch string `json:"repositoryBranch"`
-	FilePath         string `json:"filePath"`
-	LineNumber       int    `json:"lineNumber"`
-	Code             string `json:"code"`
+	FlagKey           string `json:"flagKey"`
+	RepositoryURL     string `json:"repositoryUrl"`
+	RepositoryBranch  string `json:"repositoryBranch"`
+	FilePath          string `json:"filePath"`
+	LineNumber        int    `json:"lineNumber"`
+	Code              string `json:"code"`
+	CodeLineHighlight int    `json:"codeLineHighlight"`
 }
 
 // SendFlagsToAPI takes file search result & sends flag info to the API
@@ -27,12 +28,13 @@ func SendFlagsToAPI(results []model.FileSearchResult, envId string) (err error) 
 	for _, fr := range results {
 		for _, r := range fr.Results {
 			flagInfos = append(flagInfos, FlagInfo{
-				FlagKey:          r.FlagKey,
-				RepositoryURL:    os.Getenv("REPOSITORY_URL"),
-				RepositoryBranch: os.Getenv("REPOSITORY_BRANCH"),
-				FilePath:         fr.File,
-				LineNumber:       r.LineNumber,
-				Code:             r.CodeLines,
+				FlagKey:           r.FlagKey,
+				RepositoryURL:     os.Getenv("REPOSITORY_URL"),
+				RepositoryBranch:  os.Getenv("REPOSITORY_BRANCH"),
+				FilePath:          fr.File,
+				LineNumber:        r.LineNumber,
+				Code:              r.CodeLines,
+				CodeLineHighlight: r.CodeLineHighlight,
 			})
 		}
 	}

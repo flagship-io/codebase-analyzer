@@ -12,7 +12,7 @@ type FileSearchResult struct {
 type SearchResult struct {
 	LineNumber         int
 	CodeLines          string
-	CodeLinesHighlight int
+	CodeLineHighlight  int
 	CodeLineURL        string
 	FlagKey            string
 	FlagDefaultValue   string
