@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 type languageRegex struct {
@@ -21,9 +21,9 @@ var regexes = map[string]languageRegex{
 	".js": {
 		flagRegexes: []string{
 			`(?s)useFsModifications\(.*?\)`,
-			`(?s)\.getModifications\(.*?\)`,
+			`(?s)\.getModifications\(.*?\].*?\)`,
 		},
-		flagKeyRegex: `['"]?key['"]?\s*\:\s*['"](.*)['"]`,
+		flagKeyRegex: `['"]?key['"]?\s*\:\s*['"](.*?)['"]`,
 	},
 	".go": {
 		flagRegexes: []string{
@@ -74,40 +74,53 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 
 	results := []model.SearchResult{}
 
-	flagResults := [][]int{}
+	// [$start $end]
+	flagIndexes := [][]int{}
 	for _, flagRegexString := range regexes.flagRegexes {
-		// Find all flag code occurences within file
-		flagRegex := regexp.MustCompile(flagRegexString)
-		flagResults = append(flagResults, flagRegex.FindAllStringIndex(fileContentStr, -1)...)
+		regxp := regexp.MustCompile(flagRegexString)
+		flagIndexes = append(flagIndexes, regxp.FindAllStringIndex(fileContentStr, -1)...)
 	}
 
-	for _, flagResult := range flagResults {
-		keyRegex := regexp.MustCompile(regexes.flagKeyRegex)
+	// [$start $end $flagStart $flagEnd]
+	flagKeyIndexes := [][]int{}
+	for _, flagIndex := range flagIndexes {
+		submatch := fileContentStr[flagIndex[0]:flagIndex[1]]
+		regxp := regexp.MustCompile(regexes.flagKeyRegex)
 
-		// Extract the flag code part
-		submatch := fileContentStr[flagResult[0]:flagResult[1]]
-		// Extract the code with a certain number of lines
-		firstLineIndex := getSurroundingLineIndex(fileContentStr, flagResult[0], true);
-		lastLineIndex := getSurroundingLineIndex(fileContentStr, flagResult[1], false);
-		code := fileContentStr[firstLineIndex:lastLineIndex]
+		submatchIndexes := regxp.FindAllStringSubmatchIndex(submatch, -1)
 
-		// Find the key name in the flag code part
-		flagKeyResults := keyRegex.FindStringSubmatch(submatch)
-		if len(flagKeyResults) < 2 {
-			log.Printf("Did not find the flag key in file %s. Code : %s", path, submatch)
-			continue
+		for _, submatchIndex := range submatchIndexes {
+			if len(submatchIndex) < 4 {
+				log.Printf("Did not find the flag key in file %s. Code : %s", path, submatch)
+				continue
+			}
+
+			flagKeyIndexes = append(flagKeyIndexes, []int{
+				flagIndex[0] + submatchIndex[2],
+				flagIndex[0] + submatchIndex[3],
+			})
 		}
+	}
 
-		lineNumber := getLineFromPos(fileContentStr, flagResult[0])
-		codeLineHighlight := getLineFromPos(code, strings.Index(code, submatch)) + getLineFromPos(submatch, strings.Index(submatch, flagKeyResults[1])) - 1
+	for _, flagKeyIndex := range flagKeyIndexes {
+		// Extract the code with a certain number of lines
+		firstLineIndex := getSurroundingLineIndex(fileContentStr, flagKeyIndex[0], true)
+		lastLineIndex := getSurroundingLineIndex(fileContentStr, flagKeyIndex[1], false)
+		code := fileContentStr[firstLineIndex:lastLineIndex]
+		value := fileContentStr[flagKeyIndex[0]:flagKeyIndex[1]]
+
+		lineNumber := getLineFromPos(fileContentStr, flagKeyIndex[0])
+		codeLineHighlight := getLineFromPos(code, strings.Index(code, value))
+		fmt.Println(value, codeLineHighlight)
 		results = append(results, model.SearchResult{
-			FlagKey:     flagKeyResults[1],
-			CodeLines:   code,
+			FlagKey:           value,
+			CodeLines:         code,
 			CodeLineHighlight: codeLineHighlight,
-			CodeLineURL: getCodeURL(path, &lineNumber),
+			CodeLineURL:       getCodeURL(path, &lineNumber),
 			// Get line number of the code
 			LineNumber: lineNumber,
 		})
+
 	}
 
 	resultChannel <- model.FileSearchResult{
@@ -144,20 +157,20 @@ func getSurroundingLineIndex(input string, indexPosition int, topDirection bool)
 		} else {
 			i++
 		}
-		
+
 		// edge cases
 		if i <= 0 {
 			return 0
 		}
-		if i >= len(input) - 1 {
+		if i >= len(input)-1 {
 			return len(input)
 		}
 
 		// if new line, in the top direction we don't wan't the first \n in the code
 		if input[i] == '\n' {
 			if n == e {
-				if (topDirection) {
-					return i+1
+				if topDirection {
+					return i + 1
 				}
 				return i
 			}

@@ -21,6 +21,13 @@ export DIRECTORY=./
 docker run -v $(pwd)/your_repo:/your_repo -e FLAGSHIP_TOKEN=your_token -e ENVIRONMENT_ID=your_env_id -e REPOSITORY_URL=https://gitlab.com/org/repo -e REPOSITORY_BRANCH=master -e DIRECTORY=/your_repo flagshipio/code-analyzer
 ```
 
+## Supported file languages
+- .js
+- .go
+- .py
+- .java
+- (in progress swift kotlin objective-c) 
+
 # Environment variables
 
 ## Flagship token (required)

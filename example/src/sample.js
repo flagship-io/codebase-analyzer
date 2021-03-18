@@ -21,5 +21,9 @@ const getModificationsOutput = fsVisitorInstance.getModifications(
       key: "customLabel", // required
       defaultValue: "Flagship is awesome", // required
     },
+    {
+      key: "key", // required
+      defaultValue: "Flagship is awesome", // required
+    },
   ] /* ActivateAllModifications */
 );
