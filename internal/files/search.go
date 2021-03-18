@@ -111,7 +111,6 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 
 		lineNumber := getLineFromPos(fileContentStr, flagKeyIndex[0])
 		codeLineHighlight := getLineFromPos(code, strings.Index(code, value))
-		fmt.Println(value, codeLineHighlight)
 		results = append(results, model.SearchResult{
 			FlagKey:           value,
 			CodeLines:         code,
