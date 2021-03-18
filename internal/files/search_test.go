@@ -1,13 +1,66 @@
 package files
 
 import (
-	"github.com/stretchr/testify/assert"
+	"github/flagship-io/code-analyzer/internal/files/model"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func init() {
+	os.Setenv("REPOSITORY_URL", "wwww.toto.com")
+	os.Setenv("REPOSITORY_BRANCH", "master")
 	os.Setenv("NB_CODE_LINES_EDGES", "5")
+}
+
+func TestSearchFiles(t *testing.T) {
+	resultChannel := make(chan model.FileSearchResult)
+	var r model.FileSearchResult
+
+	go SearchFiles("../../example/src/sample.js", resultChannel)
+	r = <-resultChannel
+	assert.Equal(t, "btnColor", r.Results[0].FlagKey)
+	assert.Equal(t, "customLabel", r.Results[1].FlagKey)
+	assert.Equal(t, "key", r.Results[2].FlagKey)
+	assert.Equal(t, 3, len(r.Results))
+
+	go SearchFiles("../../example/src/sample.jsx", resultChannel)
+	r = <-resultChannel
+	assert.Equal(t, "backgroundColor", r.Results[0].FlagKey)
+	assert.Equal(t, "btnColor", r.Results[1].FlagKey)
+	assert.Equal(t, 2, len(r.Results))
+
+	go SearchFiles("../../example/src/sample.go", resultChannel)
+	r = <-resultChannel
+	assert.Equal(t, "btnColor", r.Results[0].FlagKey)
+	assert.Equal(t, 5, len(r.Results))
+
+	go SearchFiles("../../example/src/sample.py", resultChannel)
+	r = <-resultChannel
+	assert.Equal(t, "btnColor", r.Results[0].FlagKey)
+	assert.Equal(t, 1, len(r.Results))
+
+	go SearchFiles("../../example/src/java/sample.java", resultChannel)
+	r = <-resultChannel
+	assert.Equal(t, "btnColor", r.Results[0].FlagKey)
+	assert.Equal(t, 1, len(r.Results))
+
+	go SearchFiles("../../example/src/java/sample.kt", resultChannel)
+	r = <-resultChannel
+	assert.Equal(t, "btnColor", r.Results[0].FlagKey)
+	assert.Equal(t, 1, len(r.Results))
+
+	go SearchFiles("../../example/src/swift/sample.swift", resultChannel)
+	r = <-resultChannel
+	assert.Equal(t, "freeDelivery", r.Results[0].FlagKey)
+	assert.Equal(t, "btnColor", r.Results[1].FlagKey)
+	assert.Equal(t, 2, len(r.Results))
+
+	go SearchFiles("../../example/src/swift/sample.m", resultChannel)
+	r = <-resultChannel
+	assert.Equal(t, "btnColor", r.Results[0].FlagKey)
+	assert.Equal(t, 1, len(r.Results))
 }
 
 func TestGetSurroundingLineIndex(t *testing.T) {

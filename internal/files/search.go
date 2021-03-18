@@ -12,40 +12,6 @@ import (
 	"strings"
 )
 
-type languageRegex struct {
-	flagRegexes  []string
-	flagKeyRegex string
-}
-
-var regexes = map[string]languageRegex{
-	".js": {
-		flagRegexes: []string{
-			`(?s)useFsModifications\(.*?\)`,
-			`(?s)\.getModifications\(.*?\].*?\)`,
-		},
-		flagKeyRegex: `['"]?key['"]?\s*\:\s*['"](.*?)['"]`,
-	},
-	".go": {
-		flagRegexes: []string{
-			`(?s)\.GetModification(String|Number|Bool|Object|Array)\(.*?\)`,
-		},
-		flagKeyRegex: `s*['"](.*?)['"]`,
-	},
-	".py": {
-		flagRegexes: []string{
-			`(?s)\.get_modification\(.*?\)`,
-		},
-		flagKeyRegex: `s*['"](.*?)['"]`,
-	},
-	".java": {
-		flagRegexes: []string{
-			`(?s)\.getModification\(.*?\)`,
-		},
-		flagKeyRegex: `s*['"](.*?)['"]`,
-	},
-	// TODO: add all languages
-}
-
 // SearchFiles search code pattern in files and return results and error
 func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 	// Read file contents
@@ -62,8 +28,14 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 
 	// Get file extension to choose matching regex
 	ext := filepath.Ext(path)
-	regexes, ok := regexes[ext]
-	if !ok {
+	var flagRegexes []model.FlagRegex
+	for _, extRegex := range model.LanguageRegexes {
+		regxp := regexp.MustCompile(extRegex.ExtensionRegexp)
+		if regxp.Match([]byte(ext)) {
+			flagRegexes = extRegex.FlagRegexes
+		}
+	}
+	if len(flagRegexes) == 0 {
 		resultChannel <- model.FileSearchResult{
 			File:    path,
 			Results: nil,
@@ -72,33 +44,39 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 		return
 	}
 
+	// Add default regex for flags in commentaries
+	flagRegexes = append(flagRegexes, model.FlagRegex{
+		FunctionRegex: `(?s)fs:flag:(\w+)`,
+		KeyRegex:      `fs:flag:(.+)`,
+	})
+
 	results := []model.SearchResult{}
 
-	// [$start $end]
-	flagIndexes := [][]int{}
-	for _, flagRegexString := range regexes.flagRegexes {
-		regxp := regexp.MustCompile(flagRegexString)
-		flagIndexes = append(flagIndexes, regxp.FindAllStringIndex(fileContentStr, -1)...)
-	}
-
-	// [$start $end $flagStart $flagEnd]
 	flagKeyIndexes := [][]int{}
-	for _, flagIndex := range flagIndexes {
-		submatch := fileContentStr[flagIndex[0]:flagIndex[1]]
-		regxp := regexp.MustCompile(regexes.flagKeyRegex)
+	for _, flagRegex := range flagRegexes {
+		regxp := regexp.MustCompile(flagRegex.FunctionRegex)
+		flagIndexes := regxp.FindAllStringIndex(fileContentStr, -1)
 
-		submatchIndexes := regxp.FindAllStringSubmatchIndex(submatch, -1)
+		for _, flagIndex := range flagIndexes {
+			submatch := fileContentStr[flagIndex[0]:flagIndex[1]]
+			regxp := regexp.MustCompile(flagRegex.KeyRegex)
 
-		for _, submatchIndex := range submatchIndexes {
-			if len(submatchIndex) < 4 {
-				log.Printf("Did not find the flag key in file %s. Code : %s", path, submatch)
-				continue
+			submatchIndexes := regxp.FindAllStringSubmatchIndex(submatch, -1)
+
+			for k, submatchIndex := range submatchIndexes {
+				if len(submatchIndex) < 4 {
+					log.Printf("Did not find the flag key in file %s. Code : %s", path, submatch)
+					continue
+				}
+				if !flagRegex.HasMultipleKeys && k > 0 {
+					break
+				}
+
+				flagKeyIndexes = append(flagKeyIndexes, []int{
+					flagIndex[0] + submatchIndex[2],
+					flagIndex[0] + submatchIndex[3],
+				})
 			}
-
-			flagKeyIndexes = append(flagKeyIndexes, []int{
-				flagIndex[0] + submatchIndex[2],
-				flagIndex[0] + submatchIndex[3],
-			})
 		}
 	}
 
@@ -108,9 +86,15 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 		lastLineIndex := getSurroundingLineIndex(fileContentStr, flagKeyIndex[1], false)
 		code := fileContentStr[firstLineIndex:lastLineIndex]
 		value := fileContentStr[flagKeyIndex[0]:flagKeyIndex[1]]
+		// Better value wrapper for code highlighting (5 chars wrapping)
+		valueWrapper := value
+		nbCharsWrapping := 5
+		if flagKeyIndex[0] > nbCharsWrapping && flagKeyIndex[1] < len(fileContentStr)-nbCharsWrapping {
+			valueWrapper = fileContentStr[flagKeyIndex[0]-nbCharsWrapping : flagKeyIndex[1]+nbCharsWrapping]
+		}
 
 		lineNumber := getLineFromPos(fileContentStr, flagKeyIndex[0])
-		codeLineHighlight := getLineFromPos(code, strings.Index(code, value))
+		codeLineHighlight := getLineFromPos(code, strings.Index(code, valueWrapper))
 		results = append(results, model.SearchResult{
 			FlagKey:           value,
 			CodeLines:         code,
