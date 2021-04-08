@@ -8,6 +8,21 @@ on:
       - "*"
 
 jobs:
+  
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.14'
+      - name: Run coverage
+        run: go test -cover -race -coverprofile=coverage.txt -covermode=atomic ./internal/... ./pkg/... -coverpkg=./...
+      - name: Upload coverage to Codecov
+        run: bash <(curl -s https://codecov.io/bash)
+
   docker:
     runs-on: ubuntu-latest
     steps:
