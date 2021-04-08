@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/flagship-io/codebase-analyzer/branch/master/graph/badge.svg?token=71NXZN582Y)](https://codecov.io/gh/flagship-io/codebase-analyzer)
+
 # Flagship Code Analyzer
 
 Flagship Code Analyzer is a CLI and a docker image that can analyze your codebase and detect the usage of Flagship flags, in order to synchronize them with your Flag view in the platform.
