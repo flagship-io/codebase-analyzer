@@ -43,7 +43,7 @@ func AnalyzeCode() error {
 
 	repoBranch := os.Getenv("REPOSITORY_BRANCH")
 	if repoBranch == "" {
-		repoBranch = "master"
+		os.Setenv("REPOSITORY_BRANCH", "master")
 	}
 
 	if os.Getenv("FILES_TO_EXCLUDE") == "" {

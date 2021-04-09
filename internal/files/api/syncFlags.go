@@ -12,11 +12,15 @@ import (
 	"github.com/flagship-io/code-analyzer/internal/files/model"
 )
 
-// FlagInfo represent a flag code info sent to the Flagship API
-type FlagInfo struct {
+type FlagUsageRequest struct {
+	RepositoryURL    string `json:"repositoryUrl"`
+	RepositoryBranch string `json:"repositoryBranch"`
+	Flags            []Flag
+}
+
+// Fl represent a flag code info sent to the Flagship API
+type Flag struct {
 	FlagKey           string `json:"flagKey"`
-	RepositoryURL     string `json:"repositoryUrl"`
-	RepositoryBranch  string `json:"repositoryBranch"`
 	FilePath          string `json:"filePath"`
 	LineNumber        int    `json:"lineNumber"`
 	Code              string `json:"code"`
@@ -25,13 +29,15 @@ type FlagInfo struct {
 
 // SendFlagsToAPI takes file search result & sends flag info to the API
 func SendFlagsToAPI(results []model.FileSearchResult, envId string) (err error) {
-	flagInfos := []FlagInfo{}
+	flagUsageRequest := FlagUsageRequest{
+		RepositoryURL:    os.Getenv("REPOSITORY_URL"),
+		RepositoryBranch: os.Getenv("REPOSITORY_BRANCH"),
+	}
+	flags := []Flag{}
 	for _, fr := range results {
 		for _, r := range fr.Results {
-			flagInfos = append(flagInfos, FlagInfo{
+			flags = append(flags, Flag{
 				FlagKey:           r.FlagKey,
-				RepositoryURL:     os.Getenv("REPOSITORY_URL"),
-				RepositoryBranch:  os.Getenv("REPOSITORY_BRANCH"),
 				FilePath:          fr.File,
 				LineNumber:        r.LineNumber,
 				Code:              r.CodeLines,
@@ -39,13 +45,14 @@ func SendFlagsToAPI(results []model.FileSearchResult, envId string) (err error) 
 			})
 		}
 	}
+	flagUsageRequest.Flags = flags
 
-	err = callAPI(envId, flagInfos)
+	err = callAPI(envId, flagUsageRequest)
 
 	return err
 }
 
-func callAPI(envID string, flagInfos []FlagInfo) error {
+func callAPI(envID string, flagInfos FlagUsageRequest) error {
 	syncFlagsRoute := fmt.Sprintf("%s/account_environments/%s/flag_usages", os.Getenv("FS_API"), envID)
 
 	json, _ := json.Marshal(flagInfos)
