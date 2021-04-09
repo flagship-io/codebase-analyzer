@@ -1,10 +1,12 @@
 package handler
 
 import (
-	"github/flagship-io/code-analyzer/internal/files/api"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/flagship-io/code-analyzer/internal/files/api"
+	"github.com/flagship-io/code-analyzer/internal/files/model"
 
 	"github.com/joho/godotenv"
 )
@@ -56,6 +58,10 @@ func AnalyzeCode() error {
 
 	if os.Getenv("NB_CODE_LINES_EDGES") == "" {
 		os.Setenv("NB_CODE_LINES_EDGES", "1")
+	}
+
+	if os.Getenv("CUSTOM_REGEX_JSON") != "" {
+		model.AddCustomRegexes(os.Getenv("CUSTOM_REGEX_JSON"))
 	}
 
 	results, err := ExtractFlagsInfo(dir, toExclude)

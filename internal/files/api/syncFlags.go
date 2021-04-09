@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github/flagship-io/code-analyzer/internal/files/model"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/flagship-io/code-analyzer/internal/files/model"
 )
 
 // FlagInfo represent a flag code info sent to the Flagship API

@@ -1,19 +1,24 @@
 package model
 
+import (
+	"encoding/json"
+	"log"
+)
+
 type LanguageRegex struct {
-	ExtensionRegexp string
-	FlagRegexes     []FlagRegex
+	ExtensionRegex string      `json:"extension_regexp"`
+	FlagRegexes    []FlagRegex `json:"flag_regexes"`
 }
 
 type FlagRegex struct {
-	FunctionRegex   string
-	KeyRegex        string
-	HasMultipleKeys bool
+	FunctionRegex   string `json:"function_regex"`
+	KeyRegex        string `json:"key_regex"`
+	HasMultipleKeys bool   `json:"has_multiple_keys"`
 }
 
 var LanguageRegexes = []LanguageRegex{
 	{
-		ExtensionRegexp: `\.jsx?$`,
+		ExtensionRegex: `\.[jt]sx?$`,
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex:   `(?s)useFsModifications\(.+?\)`,
@@ -28,7 +33,7 @@ var LanguageRegexes = []LanguageRegex{
 		},
 	},
 	{
-		ExtensionRegexp: `\.go$`,
+		ExtensionRegex: `\.go$`,
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.GetModification(String|Number|Bool|Object|Array)\(.+?\)`,
@@ -37,7 +42,7 @@ var LanguageRegexes = []LanguageRegex{
 		},
 	},
 	{
-		ExtensionRegexp: `\.py$`,
+		ExtensionRegex: `\.py$`,
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.get_modification\(.+?\)`,
@@ -46,7 +51,7 @@ var LanguageRegexes = []LanguageRegex{
 		},
 	},
 	{
-		ExtensionRegexp: `\.java$`,
+		ExtensionRegex: `\.java$`,
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.getModification\(.+?\)`,
@@ -55,7 +60,7 @@ var LanguageRegexes = []LanguageRegex{
 		},
 	},
 	{
-		ExtensionRegexp: `\.kt$`,
+		ExtensionRegex: `\.kt$`,
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.getModification\(.+?\)`,
@@ -64,7 +69,7 @@ var LanguageRegexes = []LanguageRegex{
 		},
 	},
 	{
-		ExtensionRegexp: `\.swift$`,
+		ExtensionRegex: `\.swift$`,
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.getModification\(.+?\)`,
@@ -73,7 +78,7 @@ var LanguageRegexes = []LanguageRegex{
 		},
 	},
 	{
-		ExtensionRegexp: `\.m$`,
+		ExtensionRegex: `\.m$`,
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\]\s*getModification:@.+?\]`,
@@ -81,4 +86,17 @@ var LanguageRegexes = []LanguageRegex{
 			},
 		},
 	},
+}
+
+func AddCustomRegexes(customRegexJSON string) {
+	customRegexes := []LanguageRegex{}
+	err := json.Unmarshal([]byte(customRegexJSON), &customRegexes)
+
+	if err != nil {
+		log.Printf("Error when parsing custom regexes : %v", err)
+		return
+	}
+
+	LanguageRegexes = append(LanguageRegexes, customRegexes...)
+	log.Println(LanguageRegexes)
 }

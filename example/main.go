@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github/flagship-io/code-analyzer/pkg/handler"
 	"log"
+
+	"github.com/flagship-io/code-analyzer/pkg/handler"
 )
 
 func main() {

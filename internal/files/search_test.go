@@ -1,9 +1,10 @@
 package files
 
 import (
-	"github/flagship-io/code-analyzer/internal/files/model"
 	"os"
 	"testing"
+
+	"github.com/flagship-io/code-analyzer/internal/files/model"
 
 	"github.com/stretchr/testify/assert"
 )
