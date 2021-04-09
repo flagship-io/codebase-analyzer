@@ -3,7 +3,6 @@ package files
 import (
 	"os"
 	"path/filepath"
-	"regexp"
 
 	"github.com/thoas/go-funk"
 )
@@ -23,7 +22,7 @@ func ListFiles(dir string, toExclude []string) ([]string, error) {
 
 			// Check if any shouldExclude expression matches file path
 			shouldExclude := funk.Find(toExclude, func(exclude string) bool {
-				matched, _ := regexp.Match(exclude, []byte(path))
+				matched, _ := filepath.Match(exclude, path)
 				return matched
 			})
 

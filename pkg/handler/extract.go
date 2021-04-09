@@ -1,9 +1,10 @@
 package handler
 
 import (
-	"github/flagship-io/code-analyzer/internal/files"
-	"github/flagship-io/code-analyzer/internal/files/model"
 	"log"
+
+	"github.com/flagship-io/code-analyzer/internal/files"
+	"github.com/flagship-io/code-analyzer/internal/files/model"
 )
 
 // ExtractFlagsInfo extract all flag usage information for code

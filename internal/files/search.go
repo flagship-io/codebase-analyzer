@@ -2,7 +2,6 @@ package files
 
 import (
 	"fmt"
-	"github/flagship-io/code-analyzer/internal/files/model"
 	"io/ioutil"
 	"log"
 	"os"
@@ -10,6 +9,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/flagship-io/code-analyzer/internal/files/model"
 )
 
 // SearchFiles search code pattern in files and return results and error
@@ -30,7 +31,7 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 	ext := filepath.Ext(path)
 	var flagRegexes []model.FlagRegex
 	for _, extRegex := range model.LanguageRegexes {
-		regxp := regexp.MustCompile(extRegex.ExtensionRegexp)
+		regxp := regexp.MustCompile(extRegex.ExtensionRegex)
 		if regxp.Match([]byte(ext)) {
 			flagRegexes = extRegex.FlagRegexes
 		}
