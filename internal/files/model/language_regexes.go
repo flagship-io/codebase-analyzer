@@ -98,5 +98,4 @@ func AddCustomRegexes(customRegexJSON string) {
 	}
 
 	LanguageRegexes = append(LanguageRegexes, customRegexes...)
-	log.Println(LanguageRegexes)
 }
