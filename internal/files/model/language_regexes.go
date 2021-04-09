@@ -6,7 +6,7 @@ import (
 )
 
 type LanguageRegex struct {
-	ExtensionRegex string      `json:"extension_regexp"`
+	ExtensionRegex string      `json:"extension_regex"`
 	FlagRegexes    []FlagRegex `json:"flag_regexes"`
 }
 

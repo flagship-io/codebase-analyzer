@@ -8,7 +8,7 @@ import (
 )
 
 func TestCustomRegex(t *testing.T) {
-	AddCustomRegexes(`[{"extension_regexp":".tsx?","flag_regexes":[{"function_regex":"(?s)useFlagShipActivation\\(.+?\\)","key_regex":"\\s*['\"](.+?)['\"]","has_multiple_keys":true}]}]`)
+	AddCustomRegexes(`[{"extension_regex":".tsx?","flag_regexes":[{"function_regex":"(?s)useFlagShipActivation\\(.+?\\)","key_regex":"\\s*['\"](.+?)['\"]","has_multiple_keys":true}]}]`)
 
 	found := funk.Find(LanguageRegexes, func(languageRegex LanguageRegex) bool {
 		return languageRegex.ExtensionRegex == ".tsx?"
