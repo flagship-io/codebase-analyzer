@@ -71,7 +71,7 @@ func AnalyzeCode() error {
 	}
 
 	for _, r := range results {
-		if len(results) > 0 {
+		if len(r.Results) > 0 {
 			log.Printf("Scanned file %s and found %d flag usages", r.File, len(r.Results))
 		}
 	}
