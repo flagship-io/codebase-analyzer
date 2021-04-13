@@ -71,7 +71,9 @@ func AnalyzeCode() error {
 	}
 
 	for _, r := range results {
-		log.Printf("Scanned file %s and found %d flag usages", r.File, len(r.Results))
+		if len(results) > 0 {
+			log.Printf("Scanned file %s and found %d flag usages", r.File, len(r.Results))
+		}
 	}
 
 	err = api.SendFlagsToAPI(results, envID)
