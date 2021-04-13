@@ -14,7 +14,7 @@ import (
 type FlagUsageRequest struct {
 	RepositoryURL    string `json:"repositoryUrl"`
 	RepositoryBranch string `json:"repositoryBranch"`
-	Flags            []Flag
+	Flags            []Flag `json:"flags"`
 }
 
 // Fl represent a flag code info sent to the Flagship API
