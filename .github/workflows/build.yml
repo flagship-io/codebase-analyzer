@@ -21,7 +21,9 @@ jobs:
       - name: Run coverage
         run: go test -cover -race -coverprofile=coverage.txt -covermode=atomic ./internal/... ./pkg/... -coverpkg=./...
       - name: Upload coverage to Codecov
-        run: bash <(curl -s https://codecov.io/bash)
+        uses : codecov/codecov-action@v2
+        with:
+          files: ./coverage.txt
 
   docker:
     runs-on: ubuntu-latest
