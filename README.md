@@ -107,7 +107,7 @@ This repository needs go v1.13+ to work
 
 1. Go to the example directory, and copy paste a folder you want to analyse
 2. Create a .env file to customize your environment variable
-3. Run `go run .go` in the example folder to run the code
+3. Run `go run *.go` in the example folder to run the code
 
 ## Test 
 

@@ -21,12 +21,22 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.[jt]sx?$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex:   `(?s)useFsModifications\(.+?\)`,
+				FunctionRegex:   `(?s)useFsFlag\(.+?\)`, // SDK React V3
+				KeyRegex:        `useFsFlag\(['"]?\s*(.+?)['"]\,`,
+				HasMultipleKeys: true,
+			},
+			{
+				FunctionRegex:   `(?s)useFsModifications\(.+?\)`, // SDK React V2
 				KeyRegex:        `['"]?key['"]?\s*\:\s*['"](.+?)['"]`,
 				HasMultipleKeys: true,
 			},
 			{
-				FunctionRegex:   `(?s)\.getModifications\(.+?\].+?\)`,
+				FunctionRegex:   `(?s)getFlag\(.+?\)`, // SDK JS V3
+				KeyRegex:        `getFlag\(['"]?\s*(.+?)['"]\,`,
+				HasMultipleKeys: true,
+			},
+			{
+				FunctionRegex:   `(?s)\.getModifications\(.+?\].+?\)`, // SDK JS V2
 				KeyRegex:        `['"]?key['"]?\s*\:\s*['"](.+?)['"]`,
 				HasMultipleKeys: true,
 			},
@@ -36,7 +46,7 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.go$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\.GetModification(String|Number|Bool|Object|Array)\(.+?\)`,
+				FunctionRegex: `(?s)\.GetModification(String|Number|Bool|Object|Array)\(.+?\)`, // SDK GO V2
 				KeyRegex:      `\s*['"](.+?)['"]`,
 			},
 		},
@@ -45,7 +55,7 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.py$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\.get_modification\(.+?\)`,
+				FunctionRegex: `(?s)\.get_modification\(.+?\)`, // SDK PYTHON V2
 				KeyRegex:      `\s*['"](.+?)['"]`,
 			},
 		},
@@ -54,8 +64,12 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.java$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\.getModification\(.+?\)`,
+				FunctionRegex: `(?s)\.getModification\(.+?\)`, // SDK JAVA V2
 				KeyRegex:      `\s*['"](.+?)['"]`,
+			},
+			{
+				FunctionRegex: `(?s)\.getFlag\(.+?\)`, // SDK JAVA V3
+				KeyRegex:      `(?s)\.getFlag\(['"](.+?)['"],`,
 			},
 		},
 	},
@@ -63,8 +77,12 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.kt$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\.getModification\(.+?\)`,
+				FunctionRegex: `(?s)\.getModification\(.+?\)`, // SDK ANDROID V2
 				KeyRegex:      `\s*['"](.+?)['"]`,
+			},
+			{
+				FunctionRegex: `(?s)\.getFlag\(.+?\)`, // SDK ANDROID V3
+				KeyRegex:      `(?s)\.getFlag\(['"](.+?)['"],`,
 			},
 		},
 	},
@@ -72,8 +90,12 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.swift$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\.getModification\(.+?\)`,
+				FunctionRegex: `(?s)\.getModification\(.+?\)`, // SDK iOS V2
 				KeyRegex:      `\s*['"](.+?)['"]`,
+			},
+			{
+				FunctionRegex: `(?s)\.getFlag\(key: ['"](.+?)['"]`, // SDK iOS V3
+				KeyRegex:      `['"]?key['"]?\s*\:\s*['"](.+?)['"]`,
 			},
 		},
 	},
@@ -81,8 +103,25 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.m$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\]\s*getModification:@.+?\]`,
+				FunctionRegex: `(?s)\]\s*getModification:@.+?\]`, // SDK iOS V2
 				KeyRegex:      `\s*['"](.+?)['"]`,
+			},
+			{
+				FunctionRegex: `(?s)\s*getFlagWithKey:@.+?\]`, // SDK iOS V3
+				KeyRegex:      `\s*getFlagWithKey:@['"](.+?)['"]`,
+			},
+		},
+	},
+	{
+		ExtensionRegex: `\.cs$`,
+		FlagRegexes: []FlagRegex{
+			{
+				FunctionRegex: `(?s)\.GetModification\(.+?\)`, // SDK .NET V1
+				KeyRegex:      `(?s)\.GetModification\(['"](.+?)['"],`,
+			},
+			{
+				FunctionRegex: `(?s)\.GetFlag\(.+?\)`, // SDK .NET V3
+				KeyRegex:      `(?s)\.GetFlag\(['"](.+?)['"],`,
 			},
 		},
 	},
