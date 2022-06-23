@@ -1,10 +1,11 @@
-# TODO
-- Add index.{language} in ./src to test extractor for all SDK languages:
-    - JS & Node (Done)
-    - React (Done)
-    - ReactNative (Done)
-    - Go
-    - Python
-    - Android
-    - iOS
-    - Java
+## Supported file languages
+- .cs .fs
+- .go
+- .java
+- .js .jsx
+- .kt
+- .m
+- .py
+- .swift
+- .ts .tsx
+- .vb

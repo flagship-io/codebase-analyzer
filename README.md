@@ -24,13 +24,16 @@ docker run -v $(pwd)/your_repo:/your_repo -e FLAGSHIP_TOKEN=your_token -e ENVIRO
 ```
 
 ## Supported file languages
-- .js, .jsx
+- .cs .fs
 - .go
-- .py
 - .java
-- .swift
+- .js .jsx
 - .kt
 - .m
+- .py
+- .swift
+- .ts .tsx
+- .vb
 
 # Environment variables
 

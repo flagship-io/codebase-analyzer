@@ -113,7 +113,20 @@ var LanguageRegexes = []LanguageRegex{
 		},
 	},
 	{
-		ExtensionRegex: `\.cs$`,
+		ExtensionRegex: `\.[fc]s$`,
+		FlagRegexes: []FlagRegex{
+			{
+				FunctionRegex: `(?s)\.GetModification\(.+?\)`, // SDK .NET V1
+				KeyRegex:      `(?s)\.GetModification\(['"](.+?)['"],`,
+			},
+			{
+				FunctionRegex: `(?s)\.GetFlag\(.+?\)`, // SDK .NET V3
+				KeyRegex:      `(?s)\.GetFlag\(['"](.+?)['"],`,
+			},
+		},
+	},
+	{
+		ExtensionRegex: `\.vb$`,
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.GetModification\(.+?\)`, // SDK .NET V1

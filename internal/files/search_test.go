@@ -105,6 +105,32 @@ func TestSearchFiles(t *testing.T) {
 			},
 		},
 		{
+			filePath: "../../example/src/js/SDK_V2/sample.ts",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
+				{name: "backgroundColor", lineNumber: 17, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/js/SDK_V3/sample.ts",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 15, codeLineHighlight: 6},
+				{name: "backgroundColor", lineNumber: 16, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/net/SDK_V1/sample.fs",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 10, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/net/SDK_V3/sample.fs",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
+			},
+		},
+		{
 			filePath: "../../example/src/net/SDK_V1/sample.cs",
 			flags: []flag{
 				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
@@ -114,6 +140,18 @@ func TestSearchFiles(t *testing.T) {
 			filePath: "../../example/src/net/SDK_V3/sample.cs",
 			flags: []flag{
 				{name: "btnColor", lineNumber: 15, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/net/SDK_V1/sample.vb",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 11, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/net/SDK_V3/sample.vb",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
 			},
 		},
 		{
