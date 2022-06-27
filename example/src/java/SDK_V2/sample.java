@@ -34,6 +34,8 @@ Flagship.Companion.synchronizeModifications( () -> {
     });
 
 String color = Flagship.Companion.getModification("btnColor", "#FFFFFF");
+String color = Flagship.Companion.getModification("backgroundColor", "#000000");
+button.setBackgroundColor(Color.parseColor(color));
 button.setBackgroundColor(Color.parseColor(color));
 
 

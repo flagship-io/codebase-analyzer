@@ -24,13 +24,16 @@ docker run -v $(pwd)/your_repo:/your_repo -e FLAGSHIP_TOKEN=your_token -e ENVIRO
 ```
 
 ## Supported file languages
-- .js, .jsx
+- .cs .fs
 - .go
-- .py
 - .java
-- .swift
+- .js .jsx
 - .kt
 - .m
+- .py
+- .swift
+- .ts .tsx
+- .vb
 
 # Environment variables
 
@@ -107,7 +110,7 @@ This repository needs go v1.13+ to work
 
 1. Go to the example directory, and copy paste a folder you want to analyse
 2. Create a .env file to customize your environment variable
-3. Run `go run .go` in the example folder to run the code
+3. Run `go run *.go` in the example folder to run the code
 
 ## Test 
 

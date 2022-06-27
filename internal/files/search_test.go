@@ -1,67 +1,205 @@
 package files
 
 import (
+	"fmt"
+	"github.com/flagship-io/code-analyzer/internal/files/model"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
-
-	"github.com/flagship-io/code-analyzer/internal/files/model"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func init() {
-	os.Setenv("REPOSITORY_URL", "wwww.toto.com")
-	os.Setenv("REPOSITORY_BRANCH", "master")
-	os.Setenv("NB_CODE_LINES_EDGES", "5")
+	_ = os.Setenv("REPOSITORY_URL", "wwww.toto.com")
+	_ = os.Setenv("REPOSITORY_BRANCH", "master")
+	_ = os.Setenv("NB_CODE_LINES_EDGES", "5")
 }
 
 func TestSearchFiles(t *testing.T) {
+
+	type flag struct {
+		name              string
+		lineNumber        int
+		codeLineHighlight int
+	}
+
+	type testCase struct {
+		filePath string
+		flags    []flag
+	}
+
+	var cases = []testCase{
+		{
+			filePath: "../../example/src/go/SDK_V2/sample.go",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 31, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 32, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 33, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 34, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 35, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/ios/SDK_V2/sample.m",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 21, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/ios/SDK_V2/sample.swift",
+			flags: []flag{
+				{name: "freeDelivery", lineNumber: 7, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 20, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/ios/SDK_V3/sample.m",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 7, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/ios/SDK_V3/sample.swift",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 9, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/java/SDK_V2/sample.java",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 36, codeLineHighlight: 6},
+				{name: "backgroundColor", lineNumber: 37, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/java/SDK_V2/sample.kt",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 21, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/java/SDK_V3/sample.java",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 4, codeLineHighlight: 4},
+				{name: "backgroundColor", lineNumber: 5, codeLineHighlight: 5},
+			},
+		},
+		{
+			filePath: "../../example/src/java/SDK_V3/sample.kt",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 10, codeLineHighlight: 6},
+				{name: "backgroundColor", lineNumber: 11, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/js/SDK_V2/sample.js",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
+				{name: "backgroundColor", lineNumber: 17, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/js/SDK_V3/sample.js",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 15, codeLineHighlight: 6},
+				{name: "backgroundColor", lineNumber: 16, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/js/SDK_V2/sample.ts",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
+				{name: "backgroundColor", lineNumber: 17, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/js/SDK_V3/sample.ts",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 15, codeLineHighlight: 6},
+				{name: "backgroundColor", lineNumber: 16, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/net/SDK_V1/sample.fs",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 10, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/net/SDK_V3/sample.fs",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/net/SDK_V1/sample.cs",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/net/SDK_V3/sample.cs",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 15, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/net/SDK_V1/sample.vb",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 11, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/net/SDK_V3/sample.vb",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/python/SDK_V2/sample.py",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 30, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/react/SDK_V2/sample.jsx",
+			flags: []flag{
+				{name: "backgroundColor", lineNumber: 17, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 4, codeLineHighlight: 4},
+			},
+		},
+		{
+			filePath: "../../example/src/react/SDK_V3/sample.jsx",
+			flags: []flag{
+				{name: "backgroundColor", lineNumber: 5, codeLineHighlight: 5},
+				{name: "btnColor", lineNumber: 6, codeLineHighlight: 6},
+			},
+		},
+	}
+
 	resultChannel := make(chan model.FileSearchResult)
 	var r model.FileSearchResult
 
-	go SearchFiles("../../example/src/sample.js", resultChannel)
-	r = <-resultChannel
-	assert.Equal(t, "btnColor", r.Results[0].FlagKey)
-	assert.Equal(t, "customLabel", r.Results[1].FlagKey)
-	assert.Equal(t, "key", r.Results[2].FlagKey)
-	assert.Equal(t, 3, len(r.Results))
-
-	go SearchFiles("../../example/src/sample.jsx", resultChannel)
-	r = <-resultChannel
-	assert.Equal(t, "backgroundColor", r.Results[0].FlagKey)
-	assert.Equal(t, "btnColor", r.Results[1].FlagKey)
-	assert.Equal(t, 2, len(r.Results))
-
-	go SearchFiles("../../example/src/sample.go", resultChannel)
-	r = <-resultChannel
-	assert.Equal(t, "btnColor", r.Results[0].FlagKey)
-	assert.Equal(t, 5, len(r.Results))
-
-	go SearchFiles("../../example/src/sample.py", resultChannel)
-	r = <-resultChannel
-	assert.Equal(t, "btnColor", r.Results[0].FlagKey)
-	assert.Equal(t, 1, len(r.Results))
-
-	go SearchFiles("../../example/src/java/sample.java", resultChannel)
-	r = <-resultChannel
-	assert.Equal(t, "btnColor", r.Results[0].FlagKey)
-	assert.Equal(t, 1, len(r.Results))
-
-	go SearchFiles("../../example/src/java/sample.kt", resultChannel)
-	r = <-resultChannel
-	assert.Equal(t, "btnColor", r.Results[0].FlagKey)
-	assert.Equal(t, 1, len(r.Results))
-
-	go SearchFiles("../../example/src/swift/sample.swift", resultChannel)
-	r = <-resultChannel
-	assert.Equal(t, "freeDelivery", r.Results[0].FlagKey)
-	assert.Equal(t, "btnColor", r.Results[1].FlagKey)
-	assert.Equal(t, 2, len(r.Results))
-
-	go SearchFiles("../../example/src/swift/sample.m", resultChannel)
-	r = <-resultChannel
-	assert.Equal(t, "btnColor", r.Results[0].FlagKey)
-	assert.Equal(t, 1, len(r.Results))
+	for _, c := range cases {
+		go SearchFiles(c.filePath, resultChannel)
+		r = <-resultChannel
+		assert.Equal(t, len(c.flags), len(r.Results), fmt.Sprintf("File : %s", c.filePath))
+		for i, result := range r.Results {
+			assert.Equal(t, c.flags[i].name, result.FlagKey, fmt.Sprintf("File : %s", c.filePath))
+			assert.Equal(t, c.flags[i].lineNumber, result.LineNumber, fmt.Sprintf("File : %s", c.filePath))
+			assert.Equal(t, c.flags[i].codeLineHighlight, result.CodeLineHighlight, fmt.Sprintf("File : %s", c.filePath))
+			assert.Equal(t,
+				fmt.Sprintf(
+					"%s/-/blob/%s/%s#L%d",
+					os.Getenv("REPOSITORY_URL"),
+					os.Getenv("REPOSITORY_BRANCH"),
+					c.filePath,
+					c.flags[i].lineNumber,
+				),
+				result.CodeLineURL,
+				fmt.Sprintf("File : %s", c.filePath),
+			)
+		}
+	}
 }
 
 func TestGetSurroundingLineIndex(t *testing.T) {
