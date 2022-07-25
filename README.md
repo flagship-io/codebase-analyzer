@@ -9,8 +9,10 @@ Flagship Code Analyzer is a CLI and a docker image that can analyze your codebas
 ## With CLI
 
 ```sh
-export FLAGSHIP_TOKEN=your_token
-export ENVIRONMENT_ID=your_env_id
+export FLAGSHIP_CLIENT_ID=FLAGSHIP_MANAGEMENT_API_CLIENT_ID
+export FLAGSHIP_CLIENT_SECRET=FLAGSHIP_MANAGEMENT_API_CLIENT_SECRET
+export ACCOUNT_ID=FLAGSHIP_ACCOUNT_ID
+export ENVIRONMENT_ID=FLAGSHIP_ENVIRONMENT_ID
 export REPOSITORY_URL=https://gitlab.com/org/repo
 export REPOSITORY_BRANCH=master
 export DIRECTORY=./
@@ -20,7 +22,7 @@ export DIRECTORY=./
 ## With docker
 
 ```sh
-docker run -v $(pwd)/your_repo:/your_repo -e FLAGSHIP_TOKEN=your_token -e ENVIRONMENT_ID=your_env_id -e REPOSITORY_URL=https://gitlab.com/org/repo -e REPOSITORY_BRANCH=master -e DIRECTORY=/your_repo flagshipio/code-analyzer
+docker run -v $(pwd)/your_repo:/your_repo -e FLAGSHIP_CLIENT_ID=FLAGSHIP_MANAGEMENT_API_CLIENT_ID -e FLAGSHIP_CLIENT_SECRET=FLAGSHIP_MANAGEMENT_API_CLIENT_SECRET -e ACCOUNT_ID=FLAGSHIP_ACCOUNT_ID -e ENVIRONMENT_ID=your_env_id -e REPOSITORY_URL=https://gitlab.com/org/repo -e REPOSITORY_BRANCH=master -e DIRECTORY=/your_repo flagshipio/code-analyzer
 ```
 
 ## Supported file languages
@@ -34,11 +36,23 @@ docker run -v $(pwd)/your_repo:/your_repo -e FLAGSHIP_TOKEN=your_token -e ENVIRO
 
 # Environment variables
 
-## Flagship token (required)
+## Flagship client ID (required)
 
-This environment variable contains the Flagship token necessary to send flags infos to the Flagship Platform
+This environment variable contains the Flagship client id necessary to authenticate request and send flags infos to the Flagship Platform
 
-- example : `FLAGSHIP_TOKEN=your_token`
+- example : `FLAGSHIP_CLIENT_ID=FLAGSHIP_MANAGEMENT_API_CLIENT_ID`
+
+## Flagship client secret (required)
+
+This environment variable contains the Flagship client secret necessary to authenticate request and send flags infos to the Flagship Platform
+
+- example : `FLAGSHIP_CLIENT_SECRET=FLAGSHIP_MANAGEMENT_API_CLIENT_SECRET`
+
+## Account ID (required)
+
+This environment variable contains the Flagship account ID to synchronize flags usage for the matching environment
+
+- example : `ACCOUNT_ID=your_flagship_env_id`
 
 ## Environment ID (required)
 
@@ -85,7 +99,9 @@ analyze_flag_references:
   variables:
     REPOSITORY_URL: $CI_PROJECT_URL
     REPOSITORY_BRANCH: $CI_COMMIT_BRANCH
-    FLAGSHIP_TOKEN: YOUR_FLAGSHIP_TOKEN
+    FLAGSHIP_CLIENT_ID: FLAGSHIP_MANAGEMENT_API_CLIENT_ID
+    FLAGSHIP_CLIENT_SECRET: FLAGSHIP_MANAGEMENT_API_CLIENT_SECRET
+    ACCOUNT_ID: YOUR_ACCOUNT_ID
     ENVIRONMENT_ID: YOUR_ENVIRONMENT_ID
   script:
     - /root/code-analyser
