@@ -67,19 +67,19 @@ func SendFlagsToAPI(results []model.FileSearchResult, envId string) (err error) 
 
 func generateAuthenticationToken() error {
 	if os.Getenv("FLAGSHIP_CLIENT_ID") == "" {
-		log.Fatal("Missing required environment variable FLAGSHIP_CLIENT_ID")
+		log.WithFields(log.Fields{"variable": "FLAGSHIP_CLIENT_ID"}).Fatal("Missing required environment variable")
 	}
 
 	if os.Getenv("FLAGSHIP_CLIENT_SECRET") == "" {
-		log.Fatal("Missing required environment variable FLAGSHIP_CLIENT_SECRET")
+		log.WithFields(log.Fields{"variable": "FLAGSHIP_CLIENT_SECRET"}).Fatal("Missing required environment variable")
 	}
 
 	if os.Getenv("ACCOUNT_ID") == "" {
-		log.Fatal("Missing required environment variable ACCOUNT_ID")
+		log.WithFields(log.Fields{"variable": "ACCOUNT_ID"}).Fatal("Missing required environment variable")
 	}
 
 	if os.Getenv("FS_API") == "" {
-		log.Fatal("Missing required environment variable FS_API")
+		log.WithFields(log.Fields{"variable": "FS_API"}).Fatal("Missing required environment variable")
 	}
 
 	authRequest := AuthRequest{
@@ -89,7 +89,11 @@ func generateAuthenticationToken() error {
 		ClientSecret: os.Getenv("FLAGSHIP_CLIENT_SECRET"),
 	}
 
-	body, _ := json.Marshal(authRequest)
+	body, err := json.Marshal(authRequest)
+
+	if err != nil {
+		log.Fatal("Error while marshal json", err.Error())
+	}
 
 	route := fmt.Sprintf("%s/%s/token?expires_in=0", os.Getenv("FS_AUTH_API"), os.Getenv("ACCOUNT_ID"))
 
@@ -118,7 +122,11 @@ func generateAuthenticationToken() error {
 		defer resp.Body.Close()
 
 		var result AuthResponse
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, err := ioutil.ReadAll(resp.Body)
+
+		if err != nil {
+			log.Fatal("Error while reading body", err.Error())
+		}
 
 		if err := json.Unmarshal(body, &result); err != nil {
 			fmt.Println("Can not unmarshal JSON")
@@ -168,7 +176,11 @@ func callAPI(envID string, flagInfos FlagUsageRequest) error {
 	}
 
 	if resp.StatusCode != 201 {
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, err := ioutil.ReadAll(resp.Body)
+
+		if err != nil {
+			log.Fatal("Error while reading body", err.Error())
+		}
 
 		log.WithFields(log.Fields{
 			"status": resp.Status,
