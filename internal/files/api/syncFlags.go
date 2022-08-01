@@ -84,7 +84,7 @@ func generateAuthenticationToken() error {
 
 	authRequest := AuthRequest{
 		GrantType:    "client_credentials",
-		Scope:        "flag_analytics.list flag_analytics.update env:*",
+		Scope:        "*",
 		ClientId:     os.Getenv("FLAGSHIP_CLIENT_ID"),
 		ClientSecret: os.Getenv("FLAGSHIP_CLIENT_SECRET"),
 	}

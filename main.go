@@ -11,10 +11,11 @@ func main() {
 	log.SetFormatter(&log.TextFormatter{
 		FullTimestamp: true,
 	})
+
 	log.SetLevel(log.WarnLevel)
 
 	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Error loading .env file : %v", err)
+		log.Info("Fail to load .env file")
 	}
 
 	if os.Getenv("ENABLE_LOGS") == "1" {
