@@ -4,13 +4,14 @@ import (
 	"log"
 
 	"github.com/flagship-io/code-analyzer/internal/files"
-	"github.com/flagship-io/code-analyzer/internal/files/model"
+	"github.com/flagship-io/code-analyzer/internal/model"
+	"github.com/flagship-io/code-analyzer/pkg/config"
 )
 
 // ExtractFlagsInfo extract all flag usage information for code
-func ExtractFlagsInfo(dir string, toExclude []string) ([]model.FileSearchResult, error) {
+func ExtractFlagsInfo(cfg *config.Config) ([]model.FileSearchResult, error) {
 	// List all files within the current directory
-	filePaths, err := files.ListFiles(dir, toExclude)
+	filePaths, err := files.ListFiles(cfg.Directory, cfg.FilesToExcludes)
 
 	if err != nil {
 		log.Panicf("Error occured when listing files : %v", err)
@@ -20,7 +21,7 @@ func ExtractFlagsInfo(dir string, toExclude []string) ([]model.FileSearchResult,
 	resultsChan := make(chan model.FileSearchResult)
 
 	for _, f := range filePaths {
-		go files.SearchFiles(f, resultsChan)
+		go files.SearchFiles(cfg, f, resultsChan)
 	}
 
 	for range filePaths {
