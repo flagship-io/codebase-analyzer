@@ -2,16 +2,17 @@ package files
 
 import (
 	"fmt"
-	"github.com/flagship-io/code-analyzer/internal/files/model"
-	"github.com/stretchr/testify/assert"
-	"os"
 	"testing"
+
+	"github.com/flagship-io/code-analyzer/internal/model"
+	"github.com/flagship-io/code-analyzer/pkg/config"
+	"github.com/stretchr/testify/assert"
 )
 
-func init() {
-	_ = os.Setenv("REPOSITORY_URL", "wwww.toto.com")
-	_ = os.Setenv("REPOSITORY_BRANCH", "master")
-	_ = os.Setenv("NB_CODE_LINES_EDGES", "5")
+var testCfg = &config.Config{
+	RepositoryURL:    "wwww.toto.com",
+	RepositoryBranch: "master",
+	NbLineCodeEdges:  5,
 }
 
 func TestSearchFiles(t *testing.T) {
@@ -180,7 +181,7 @@ func TestSearchFiles(t *testing.T) {
 	var r model.FileSearchResult
 
 	for _, c := range cases {
-		go SearchFiles(c.filePath, resultChannel)
+		go SearchFiles(testCfg, c.filePath, resultChannel)
 		r = <-resultChannel
 		assert.Equal(t, len(c.flags), len(r.Results), fmt.Sprintf("File : %s", c.filePath))
 		for i, result := range r.Results {
@@ -190,8 +191,8 @@ func TestSearchFiles(t *testing.T) {
 			assert.Equal(t,
 				fmt.Sprintf(
 					"%s/-/blob/%s/%s#L%d",
-					os.Getenv("REPOSITORY_URL"),
-					os.Getenv("REPOSITORY_BRANCH"),
+					testCfg.RepositoryURL,
+					testCfg.RepositoryBranch,
 					c.filePath,
 					c.flags[i].lineNumber,
 				),
@@ -229,8 +230,8 @@ func TestGetSurroundingLineIndex(t *testing.T) {
 	11;
 12;
 	13;`
-	start := getSurroundingLineIndex(code, 24, true)
-	end := getSurroundingLineIndex(code, 24, false)
+	start := getSurroundingLineIndex(code, 24, true, testCfg.NbLineCodeEdges)
+	end := getSurroundingLineIndex(code, 24, false, testCfg.NbLineCodeEdges)
 
 	assert.Equal(t, 7, start)
 	assert.Equal(t, 48, end)
@@ -243,8 +244,8 @@ func TestGetSurroundingLineIndexEdgeCases(t *testing.T) {
 	3;
 	4;
 5;`
-	start := getSurroundingLineIndex(code, 8, true)
-	end := getSurroundingLineIndex(code, 8, false)
+	start := getSurroundingLineIndex(code, 8, true, testCfg.NbLineCodeEdges)
+	end := getSurroundingLineIndex(code, 8, false, testCfg.NbLineCodeEdges)
 
 	assert.Equal(t, 0, start)
 	assert.Equal(t, 17, end)

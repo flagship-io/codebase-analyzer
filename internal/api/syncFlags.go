@@ -4,13 +4,23 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
-	"os"
 
-	"github.com/flagship-io/code-analyzer/internal/files/model"
+	log "github.com/sirupsen/logrus"
+
+	"github.com/flagship-io/code-analyzer/internal/model"
+	"github.com/flagship-io/code-analyzer/pkg/config"
 )
+
+type SendFlagsParameters struct {
+	FlagshipAPIURL       string
+	FlagshipAuthAPIURL   string
+	FlagshipClientID     string
+	FlagshipClientSecret string
+	RepositoryURL        string
+	RepositoryBranch     string
+}
 
 type AuthRequest struct {
 	GrantType    string `json:"grant_type"`
@@ -41,10 +51,10 @@ type Flag struct {
 }
 
 // SendFlagsToAPI takes file search result & sends flag info to the API
-func SendFlagsToAPI(results []model.FileSearchResult, envId string) (err error) {
+func SendFlagsToAPI(cfg *config.Config, results []model.FileSearchResult) (err error) {
 	flagUsageRequest := FlagUsageRequest{
-		RepositoryURL:    os.Getenv("REPOSITORY_URL"),
-		RepositoryBranch: os.Getenv("REPOSITORY_BRANCH"),
+		RepositoryURL:    cfg.RepositoryURL,
+		RepositoryBranch: cfg.RepositoryBranch,
 	}
 	var flags []Flag
 	for _, fr := range results {
@@ -60,33 +70,18 @@ func SendFlagsToAPI(results []model.FileSearchResult, envId string) (err error) 
 	}
 	flagUsageRequest.Flags = flags
 
-	err = callAPI(envId, flagUsageRequest)
+	err = callAPI(cfg, flagUsageRequest)
 
 	return err
 }
 
-func generateAuthenticationToken() error {
-	if os.Getenv("FLAGSHIP_CLIENT_ID") == "" {
-		log.WithFields(log.Fields{"variable": "FLAGSHIP_CLIENT_ID"}).Fatal("Missing required environment variable")
-	}
-
-	if os.Getenv("FLAGSHIP_CLIENT_SECRET") == "" {
-		log.WithFields(log.Fields{"variable": "FLAGSHIP_CLIENT_SECRET"}).Fatal("Missing required environment variable")
-	}
-
-	if os.Getenv("ACCOUNT_ID") == "" {
-		log.WithFields(log.Fields{"variable": "ACCOUNT_ID"}).Fatal("Missing required environment variable")
-	}
-
-	if os.Getenv("FS_API") == "" {
-		log.WithFields(log.Fields{"variable": "FS_API"}).Fatal("Missing required environment variable")
-	}
+func generateAuthenticationToken(cfg *config.Config) (string, error) {
 
 	authRequest := AuthRequest{
 		GrantType:    "client_credentials",
 		Scope:        "*",
-		ClientId:     os.Getenv("FLAGSHIP_CLIENT_ID"),
-		ClientSecret: os.Getenv("FLAGSHIP_CLIENT_SECRET"),
+		ClientId:     cfg.FlagshipClientID,
+		ClientSecret: cfg.FlagshipClientSecret,
 	}
 
 	body, err := json.Marshal(authRequest)
@@ -95,7 +90,7 @@ func generateAuthenticationToken() error {
 		log.Fatal("Error while marshal json", err.Error())
 	}
 
-	route := fmt.Sprintf("%s/%s/token?expires_in=0", os.Getenv("FS_AUTH_API"), os.Getenv("ACCOUNT_ID"))
+	route := fmt.Sprintf("%s/%s/token?expires_in=0", cfg.FlagshipAuthAPIURL, cfg.FlagshipAccountID)
 
 	req, err := http.NewRequest("POST", route, bytes.NewBuffer(body))
 	if err != nil {
@@ -111,12 +106,12 @@ func generateAuthenticationToken() error {
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	if resp.StatusCode == 200 {
 		if err != nil {
-			return err
+			return "", err
 		}
 
 		defer resp.Body.Close()
@@ -132,28 +127,24 @@ func generateAuthenticationToken() error {
 			fmt.Println("Can not unmarshal JSON")
 		}
 
-		_ = os.Setenv("FS_AUTH_ACCESS_TOKEN", result.AccessToken)
+		return result.AccessToken, nil
 	} else {
 		body, _ := ioutil.ReadAll(resp.Body)
-		log.WithFields(log.Fields{
-			"status": resp.Status,
-			"body":   bytes.NewBuffer(body),
-		}).Fatal("Error when calling Flagship authentication API")
+		return "", fmt.Errorf("error when calling Flagship authentication API. Status: %s, body: %s", resp.Status, string(body))
 	}
-
-	return nil
 }
 
-func callAPI(envID string, flagInfos FlagUsageRequest) error {
+func callAPI(cfg *config.Config, flagInfos FlagUsageRequest) error {
 
-	if os.Getenv("FS_AUTH_ACCESS_TOKEN") == "" {
-		err := generateAuthenticationToken()
+	if cfg.FlagshipAPIToken == "" {
+		token, err := generateAuthenticationToken(cfg)
 		if err != nil {
 			return err
 		}
+		cfg.FlagshipAPIToken = token
 	}
 
-	route := fmt.Sprintf("%s/v1/accounts/%s/account_environments/%s/flags_usage", os.Getenv("FS_API"), os.Getenv("ACCOUNT_ID"), envID)
+	route := fmt.Sprintf("%s/v1/accounts/%s/account_environments/%s/flags_usage", cfg.FlagshipAPIURL, cfg.FlagshipAccountID, cfg.FlagshipEnvironmentID)
 
 	body, _ := json.Marshal(flagInfos)
 
@@ -167,7 +158,7 @@ func callAPI(envID string, flagInfos FlagUsageRequest) error {
 		log.Fatal("Error in request", err.Error())
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", os.Getenv("FS_AUTH_ACCESS_TOKEN")))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", cfg.FlagshipAPIToken))
 
 	resp, err := http.DefaultClient.Do(req)
 

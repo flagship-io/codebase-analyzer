@@ -4,17 +4,16 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 	"path/filepath"
 	"regexp"
-	"strconv"
 	"strings"
 
-	"github.com/flagship-io/code-analyzer/internal/files/model"
+	"github.com/flagship-io/code-analyzer/internal/model"
+	"github.com/flagship-io/code-analyzer/pkg/config"
 )
 
 // SearchFiles search code pattern in files and return results and error
-func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
+func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileSearchResult) {
 	// Read file contents
 	fileContent, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -40,7 +39,7 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 		resultChannel <- model.FileSearchResult{
 			File:    path,
 			Results: nil,
-			Error:   fmt.Errorf("File extension %s not handled", ext),
+			Error:   fmt.Errorf("file extension %s not handled", ext),
 		}
 		return
 	}
@@ -83,8 +82,8 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 
 	for _, flagKeyIndex := range flagKeyIndexes {
 		// Extract the code with a certain number of lines
-		firstLineIndex := getSurroundingLineIndex(fileContentStr, flagKeyIndex[0], true)
-		lastLineIndex := getSurroundingLineIndex(fileContentStr, flagKeyIndex[1], false)
+		firstLineIndex := getSurroundingLineIndex(fileContentStr, flagKeyIndex[0], true, cfg.NbLineCodeEdges)
+		lastLineIndex := getSurroundingLineIndex(fileContentStr, flagKeyIndex[1], false, cfg.NbLineCodeEdges)
 		code := fileContentStr[firstLineIndex:lastLineIndex]
 		value := fileContentStr[flagKeyIndex[0]:flagKeyIndex[1]]
 		// Better value wrapper for code highlighting (5 chars wrapping)
@@ -100,7 +99,7 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 			FlagKey:           value,
 			CodeLines:         code,
 			CodeLineHighlight: codeLineHighlight,
-			CodeLineURL:       getCodeURL(path, &lineNumber),
+			CodeLineURL:       getCodeURL(cfg, path, &lineNumber),
 			// Get line number of the code
 			LineNumber: lineNumber,
 		})
@@ -109,31 +108,24 @@ func SearchFiles(path string, resultChannel chan model.FileSearchResult) {
 
 	resultChannel <- model.FileSearchResult{
 		File:    path,
-		FileURL: getCodeURL(path, nil),
+		FileURL: getCodeURL(cfg, path, nil),
 		Results: results,
 		Error:   err,
 	}
 }
 
-func getCodeURL(filePath string, line *int) string {
-	repositoryURL := os.Getenv("REPOSITORY_URL")
-	repositoryBranch := os.Getenv("REPOSITORY_BRANCH")
-
-	repositorySep := ""
-	if repositoryURL[len(repositoryURL)-1:] != "/" {
-		repositorySep = "/"
-	}
+func getCodeURL(cfg *config.Config, filePath string, line *int) string {
+	repositoryURL := strings.TrimSuffix(cfg.RepositoryURL, "/")
 	lineAnchor := ""
 	if line != nil {
 		lineAnchor = fmt.Sprintf("#L%d", *line)
 	}
-	return fmt.Sprintf("%s%s-/blob/%s/%s%s", repositoryURL, repositorySep, repositoryBranch, filePath, lineAnchor)
+	return fmt.Sprintf("%s/-/blob/%s/%s%s", repositoryURL, cfg.RepositoryBranch, filePath, lineAnchor)
 }
 
-func getSurroundingLineIndex(input string, indexPosition int, topDirection bool) int {
+func getSurroundingLineIndex(input string, indexPosition int, topDirection bool, nbLineCodeEdges int) int {
 	i := indexPosition
 	n := 0
-	e, _ := strconv.Atoi(os.Getenv("NB_CODE_LINES_EDGES"))
 	for {
 		// to top or bottom
 		if topDirection {
@@ -152,7 +144,7 @@ func getSurroundingLineIndex(input string, indexPosition int, topDirection bool)
 
 		// if new line, in the top direction we don't wan't the first \n in the code
 		if input[i] == '\n' {
-			if n == e {
+			if n == nbLineCodeEdges {
 				if topDirection {
 					return i + 1
 				}
