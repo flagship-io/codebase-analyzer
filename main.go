@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/flagship-io/code-analyzer/pkg/config"
-	"github.com/flagship-io/code-analyzer/pkg/handler"
+	"github.com/flagship-io/codebase-analyzer/pkg/config"
+	"github.com/flagship-io/codebase-analyzer/pkg/handler"
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 )

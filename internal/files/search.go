@@ -8,8 +8,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/flagship-io/code-analyzer/internal/model"
-	"github.com/flagship-io/code-analyzer/pkg/config"
+	"github.com/flagship-io/codebase-analyzer/internal/model"
+	"github.com/flagship-io/codebase-analyzer/pkg/config"
 )
 
 // SearchFiles search code pattern in files and return results and error

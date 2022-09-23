@@ -1,4 +1,4 @@
-module github.com/flagship-io/code-analyzer
+module github.com/flagship-io/codebase-analyzer
 
 go 1.16
 

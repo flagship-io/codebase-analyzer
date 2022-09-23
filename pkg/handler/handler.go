@@ -3,9 +3,9 @@ package handler
 import (
 	log "github.com/sirupsen/logrus"
 
-	"github.com/flagship-io/code-analyzer/internal/api"
-	"github.com/flagship-io/code-analyzer/internal/model"
-	"github.com/flagship-io/code-analyzer/pkg/config"
+	"github.com/flagship-io/codebase-analyzer/internal/api"
+	"github.com/flagship-io/codebase-analyzer/internal/model"
+	"github.com/flagship-io/codebase-analyzer/pkg/config"
 )
 
 // AnalyzeCode loads and checks environment variables, extract flags from code and send flag infos to Flagship API

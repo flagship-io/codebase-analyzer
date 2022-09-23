@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/flagship-io/code-analyzer/internal/model"
-	"github.com/flagship-io/code-analyzer/pkg/config"
+	"github.com/flagship-io/codebase-analyzer/internal/model"
+	"github.com/flagship-io/codebase-analyzer/pkg/config"
 	"github.com/stretchr/testify/assert"
 )
 
