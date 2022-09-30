@@ -3,6 +3,7 @@ package files
 import (
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/thoas/go-funk"
 )
@@ -23,7 +24,7 @@ func ListFiles(dir string, toExclude []string) ([]string, error) {
 			// Check if any shouldExclude expression matches file path
 			shouldExclude := funk.Find(toExclude, func(exclude string) bool {
 				matched, _ := filepath.Match(exclude, path)
-				return matched
+				return matched || strings.Contains(path, exclude)
 			})
 
 			if shouldExclude == nil {
