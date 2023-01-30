@@ -74,6 +74,19 @@ var LanguageRegexes = []LanguageRegex{
 		},
 	},
 	{
+		ExtensionRegex: `\.php$`,
+		FlagRegexes: []FlagRegex{
+			{
+				FunctionRegex: `(?s)\-\>getModification\(.+?\)`, // SDK JAVA V2
+				KeyRegex:      `\s*['"](.+?)['"]`,
+			},
+			{
+				FunctionRegex: `(?s)\-\>getFlag\(.+?\)`, // SDK JAVA V3
+				KeyRegex:      `(?s)\-\>getFlag\(['"](.+?)['"],`,
+			},
+		},
+	},
+	{
 		ExtensionRegex: `\.kt$`,
 		FlagRegexes: []FlagRegex{
 			{
