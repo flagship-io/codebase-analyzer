@@ -6,6 +6,7 @@
 - .kt
 - .m
 - .py
+- .php
 - .swift
 - .ts .tsx
 - .vb
