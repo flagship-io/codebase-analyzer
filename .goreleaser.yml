@@ -1,0 +1,32 @@
+# .goreleaser.yaml
+builds:
+  # You can have multiple builds defined as a yaml list
+  - # Binary name.
+    # Can be a path (e.g. `bin/app`) to wrap the binary in a directory.
+    # Default is the name of the project directory.
+    binary: codebase-analyzer
+
+    # GOOS list to build for.
+    # For more info refer to: https://golang.org/doc/install/source#environment
+    # Defaults are darwin and linux.
+    goos:
+      - freebsd
+      - windows
+      - linux
+      - darwin
+
+    env:
+      - CGO_ENABLED=0
+
+universal_binaries:
+  - replace: true
+
+brews:
+  - name: codebase-analyzer
+    homepage: "https://github.com/flagship-io/codebase-analyzer"
+    tap:
+      owner: flagship-io
+      name: homebrew-flagship
+    commit_author:
+      name: flagship
+      email: flagship@abtasty.com
