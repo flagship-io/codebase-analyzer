@@ -46,16 +46,16 @@ func TestSearchFiles(t *testing.T) {
 			},
 		},
 		{
+			filePath: "../../example/src/ios/SDK_V3/sample.m",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 7, codeLineHighlight: 6},
+			},
+		},
+		{
 			filePath: "../../example/src/ios/SDK_V2/sample.swift",
 			flags: []flag{
 				{name: "freeDelivery", lineNumber: 7, codeLineHighlight: 6},
 				{name: "btnColor", lineNumber: 20, codeLineHighlight: 6},
-			},
-		},
-		{
-			filePath: "../../example/src/ios/SDK_V3/sample.m",
-			flags: []flag{
-				{name: "btnColor", lineNumber: 7, codeLineHighlight: 6},
 			},
 		},
 		{
@@ -72,16 +72,16 @@ func TestSearchFiles(t *testing.T) {
 			},
 		},
 		{
-			filePath: "../../example/src/java/SDK_V2/sample.kt",
-			flags: []flag{
-				{name: "btnColor", lineNumber: 21, codeLineHighlight: 6},
-			},
-		},
-		{
 			filePath: "../../example/src/java/SDK_V3/sample.java",
 			flags: []flag{
 				{name: "btnColor", lineNumber: 4, codeLineHighlight: 4},
 				{name: "backgroundColor", lineNumber: 5, codeLineHighlight: 5},
+			},
+		},
+		{
+			filePath: "../../example/src/java/SDK_V2/sample.kt",
+			flags: []flag{
+				{name: "btnColor", lineNumber: 21, codeLineHighlight: 6},
 			},
 		},
 		{
@@ -173,6 +173,24 @@ func TestSearchFiles(t *testing.T) {
 			flags: []flag{
 				{name: "backgroundColor", lineNumber: 5, codeLineHighlight: 5},
 				{name: "btnColor", lineNumber: 6, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/php/SDK_V1/sample.php",
+			flags: []flag{
+				{name: "displayVipFeature", lineNumber: 7, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/php/SDK_V2/sample.php",
+			flags: []flag{
+				{name: "displayVipFeature", lineNumber: 8, codeLineHighlight: 6},
+			},
+		},
+		{
+			filePath: "../../example/src/php/SDK_V3/sample.php",
+			flags: []flag{
+				{name: "displayVipFeature", lineNumber: 8, codeLineHighlight: 6},
 			},
 		},
 	}
