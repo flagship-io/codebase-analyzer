@@ -32,6 +32,7 @@ docker run -v $(pwd)/your_repo:/your_repo -e FLAGSHIP_CLIENT_ID=FLAGSHIP_MANAGEM
 - .js .jsx
 - .kt
 - .m
+- .php
 - .py
 - .swift
 - .ts .tsx
