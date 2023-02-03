@@ -12,7 +12,7 @@ type LanguageRegex struct {
 
 type FlagRegex struct {
 	FunctionRegex   string `json:"function_regex"`
-	FieldRegex      string `json:"key_regex"`
+	FieldRegex      string `json:"field_regex"`
 	HasMultipleKeys bool   `json:"has_multiple_keys"`
 }
 
