@@ -30,7 +30,7 @@ func main() {
 
 	discountName, err := fsVisitor.GetModificationString("btnColor", "VString", true)
 	discountName, err := fsVisitor.GetModificationNumber("btnSize", 13, true)
-	discountName, err := fsVisitor.GetModificationBool("ShowBtn", false, true)
+	discountName, err := fsVisitor.GetModificationBool("showBtn", false, true)
 
 	// If there is not error (and if there is, your value will still be set to defaut), you can use your modification value in your business logic
 	discountValue := getDiscountFromDB(discountName)
