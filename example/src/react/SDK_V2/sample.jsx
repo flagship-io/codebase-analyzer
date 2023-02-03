@@ -1,7 +1,6 @@
 import React from "react";
 import { useFsModifications } from "@flagship.io/react-sdk";
 
-// fs:flag:btnColor
 const btnColorFlag = 'btnColor';
 const fsModificationsDynamic = useFsModifications([
     {
@@ -16,6 +15,16 @@ export const MyReactComponent = () => {
     {
       key: "backgroundColor",
       defaultValue: "green",
+      activate: false,
+    },
+    {
+      key: "backgroundSize",
+      defaultValue: 16,
+      activate: false,
+    },
+    {
+      key: "showBackground",
+      defaultValue: true,
       activate: false,
     },
   ]);
