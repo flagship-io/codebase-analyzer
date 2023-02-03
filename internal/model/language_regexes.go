@@ -21,23 +21,23 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.[jt]sx?$`,
 		FlagRegexes: []FlagRegex{
 			{
+				FunctionRegex:   `(?s)useFsModifications\(.+?\)`, // SDK React V2
+				FieldRegex:      `['"]?key['"]?\s*\:\s*['"](.+?)['"](?:.*\s*)['"]?defaultValue['"]?\s*\:\s*['"]?(.+?)['"]?\s*[\"\,]`,
+				HasMultipleKeys: true,
+			},
+			{
 				FunctionRegex:   `(?s)useFsFlag\(.+?\)`, // SDK React V3
 				FieldRegex:      `useFsFlag\(['"]?\s*(.+?)['"](?:.\s*)['"]?(.+?)['"]?\s*[\"\)]`,
 				HasMultipleKeys: true,
 			},
 			{
-				FunctionRegex:   `(?s)useFsModifications\(.+?\)`, // SDK React V2
+				FunctionRegex:   `(?s)\.getModifications\(.+?\].+?\)`, // SDK JS V2
 				FieldRegex:      `['"]?key['"]?\s*\:\s*['"](.+?)['"](?:.*\s*)['"]?defaultValue['"]?\s*\:\s*['"]?(.+?)['"]?\s*[\"\,]`,
 				HasMultipleKeys: true,
 			},
 			{
 				FunctionRegex:   `(?s)getFlag\(.+?\)`, // SDK JS V3
 				FieldRegex:      `getFlag\(['"]?\s*(.+?)['"](?:.\s*)['"]?(.+?)['"]?\s*[\"\)\,]`,
-				HasMultipleKeys: true,
-			},
-			{
-				FunctionRegex:   `(?s)\.getModifications\(.+?\].+?\)`, // SDK JS V2
-				FieldRegex:      `['"]?key['"]?\s*\:\s*['"](.+?)['"](?:.*\s*)['"]?defaultValue['"]?\s*\:\s*['"]?(.+?)['"]?\s*[\"\,]`,
 				HasMultipleKeys: true,
 			},
 		},
