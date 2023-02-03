@@ -14,8 +14,8 @@ visitor.on("ready", (error) => {
 
     const btnColorFlag = visitor.getFlag("btnColor", 'red').getValue();
     const backgroundColorFlag = visitor.getFlag("backgroundColor", 'green').getValue();
-    const backgroundSize = visitor.getFlag("backgroundColor", 16).getValue();
-    const ShowBackground = visitor.getFlag("backgroundColor", true).getValue();
+    const backgroundSize = visitor.getFlag("backgroundSize", 16).getValue();
+    const showBackground = visitor.getFlag("showBackground", true).getValue();
 
     console.log('btnColorFlag : ', btnColorFlag)
     console.log('backgroundColor : ', backgroundColorFlag)

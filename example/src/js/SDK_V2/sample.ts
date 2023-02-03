@@ -22,7 +22,7 @@ const modificationsOutput = fsVisitorInstance.getModifications(
             defaultValue: 16, // required
         },
         {
-            key: "Showbackground", // required
+            key: "showbackground", // required
             defaultValue: true, // required
         },
     ]
