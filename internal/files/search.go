@@ -1,6 +1,7 @@
 package files
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -47,24 +48,24 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 	// Add default regex for flags in commentaries
 	flagRegexes = append(flagRegexes, model.FlagRegex{
 		FunctionRegex: `(?s)fs:flag:(\w+)`,
-		KeyRegex:      `fs:flag:(.+)`,
+		FieldRegex:    `fs:flag:(.+)`,
 	})
 
 	results := []model.SearchResult{}
 
-	flagKeyIndexes := [][]int{}
+	flagIndexes := [][]int{}
 	for _, flagRegex := range flagRegexes {
 		regxp := regexp.MustCompile(flagRegex.FunctionRegex)
-		flagIndexes := regxp.FindAllStringIndex(fileContentStr, -1)
+		flagLineIndexes := regxp.FindAllStringIndex(fileContentStr, -1)
 
-		for _, flagIndex := range flagIndexes {
-			submatch := fileContentStr[flagIndex[0]:flagIndex[1]]
-			regxp := regexp.MustCompile(flagRegex.KeyRegex)
+		for _, flagLineIndex := range flagLineIndexes {
+			submatch := fileContentStr[flagLineIndex[0]:flagLineIndex[1]]
+			regxp := regexp.MustCompile(flagRegex.FieldRegex)
 
 			submatchIndexes := regxp.FindAllStringSubmatchIndex(submatch, -1)
 
 			for k, submatchIndex := range submatchIndexes {
-				if len(submatchIndex) < 4 {
+				if len(submatchIndex) < 6 {
 					log.Printf("Did not find the flag key in file %s. Code : %s", path, submatch)
 					continue
 				}
@@ -72,31 +73,56 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 					break
 				}
 
-				flagKeyIndexes = append(flagKeyIndexes, []int{
-					flagIndex[0] + submatchIndex[2],
-					flagIndex[0] + submatchIndex[3],
+				flagIndexes = append(flagIndexes, []int{
+					flagLineIndex[0] + submatchIndex[2],
+					flagLineIndex[0] + submatchIndex[3],
+					flagLineIndex[0] + submatchIndex[4],
+					flagLineIndex[0] + submatchIndex[5],
 				})
 			}
 		}
 	}
 
-	for _, flagKeyIndex := range flagKeyIndexes {
+	for _, flagIndex := range flagIndexes {
 		// Extract the code with a certain number of lines
-		firstLineIndex := getSurroundingLineIndex(fileContentStr, flagKeyIndex[0], true, cfg.NbLineCodeEdges)
-		lastLineIndex := getSurroundingLineIndex(fileContentStr, flagKeyIndex[1], false, cfg.NbLineCodeEdges)
+		firstLineIndex := getSurroundingLineIndex(fileContentStr, flagIndex[0], true, cfg.NbLineCodeEdges)
+		lastLineIndex := getSurroundingLineIndex(fileContentStr, flagIndex[1], false, cfg.NbLineCodeEdges)
 		code := fileContentStr[firstLineIndex:lastLineIndex]
-		value := fileContentStr[flagKeyIndex[0]:flagKeyIndex[1]]
+		key := fileContentStr[flagIndex[0]:flagIndex[1]]
+		defaultValue := fileContentStr[flagIndex[2]:flagIndex[3]]
 		// Better value wrapper for code highlighting (5 chars wrapping)
-		valueWrapper := value
+		keyWrapper := key
 		nbCharsWrapping := 5
-		if flagKeyIndex[0] > nbCharsWrapping && flagKeyIndex[1] < len(fileContentStr)-nbCharsWrapping {
-			valueWrapper = fileContentStr[flagKeyIndex[0]-nbCharsWrapping : flagKeyIndex[1]+nbCharsWrapping]
+		if flagIndex[0] > nbCharsWrapping && flagIndex[1] < len(fileContentStr)-nbCharsWrapping {
+			keyWrapper = fileContentStr[flagIndex[0]-nbCharsWrapping : flagIndex[1]+nbCharsWrapping]
 		}
 
-		lineNumber := getLineFromPos(fileContentStr, flagKeyIndex[0])
-		codeLineHighlight := getLineFromPos(code, strings.Index(code, valueWrapper))
+		lineNumber := getLineFromPos(fileContentStr, flagIndex[0])
+		codeLineHighlight := getLineFromPos(code, strings.Index(code, keyWrapper))
+
+		var flagType string = "text"
+		var flagTypeInterface interface{}
+
+		r, _ := regexp.Compile(`[^\w#]`)
+
+		json.Unmarshal([]byte(defaultValue), &flagTypeInterface)
+
+		if _, isNumber := flagTypeInterface.(float64); isNumber {
+			flagType = "number"
+		}
+
+		if _, isBool := flagTypeInterface.(bool); isBool {
+			flagType = "boolean"
+		}
+
+		if match := r.MatchString(defaultValue); match {
+			flagType = "unknown"
+		}
+
 		results = append(results, model.SearchResult{
-			FlagKey:           value,
+			FlagKey:           key,
+			FlagDefaultValue:  defaultValue,
+			FlagType:          flagType,
 			CodeLines:         code,
 			CodeLineHighlight: codeLineHighlight,
 			CodeLineURL:       getCodeURL(cfg, path, &lineNumber),
