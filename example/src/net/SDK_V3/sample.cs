@@ -13,3 +13,5 @@ var visitor = Fs.NewVisitor("<VISITOR_ID>")
   await visitor.FetchFlags();
 
 var flag = visitor.GetFlag("btnColor", 'red');
+var flag = visitor.GetFlag("btnSize", 13);
+var flag = visitor.GetFlag("showBtn", true);
