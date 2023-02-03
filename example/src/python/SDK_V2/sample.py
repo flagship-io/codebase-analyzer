@@ -27,4 +27,6 @@ Flagship.instance().start("your_env_id", "your_api_key", Config())
 visitor = Flagship.instance().create_visitor("user_#1234", {'isVip':True})
 visitor.synchronize_modifications()
 
-vip_feature_enabled = visitor.get_modification('btnColor', False)
+vip_feature_enabled = visitor.get_modification('showBtn', False)
+vip_feature_color = visitor.get_modification('btnColor', "red")
+vip_feature_size = visitor.get_modification('btnSize', 16)
