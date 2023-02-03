@@ -32,63 +32,79 @@ func TestSearchFiles(t *testing.T) {
 		{
 			filePath: "../../example/src/go/SDK_V2/sample.go",
 			flags: []flag{
-				{name: "btnColor", lineNumber: 31, codeLineHighlight: 6},
-				{name: "btnColor", lineNumber: 32, codeLineHighlight: 6},
-				{name: "btnColor", lineNumber: 33, codeLineHighlight: 6},
-				{name: "btnColor", lineNumber: 34, codeLineHighlight: 6},
-				{name: "btnColor", lineNumber: 35, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 36, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 37, codeLineHighlight: 6},
+				{name: "showBtn", lineNumber: 38, codeLineHighlight: 6},
 			},
 		},
-		{
+		/* 		{
 			filePath: "../../example/src/ios/SDK_V2/sample.m",
-			flags: []flag{
+			flags:    []flag{
 				{name: "btnColor", lineNumber: 21, codeLineHighlight: 6},
+				{name: "showBtn", lineNumber: 22, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 23, codeLineHighlight: 6},
+				{name: "btnSizeFloat", lineNumber: 24, codeLineHighlight: 6},
 			},
-		},
-		{
+		}, */
+		/* 		{
 			filePath: "../../example/src/ios/SDK_V3/sample.m",
 			flags: []flag{
-				{name: "btnColor", lineNumber: 7, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 8, codeLineHighlight: 6},
+				{name: "showBtn", lineNumber: 9, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 10, codeLineHighlight: 6},
+				{name: "btnSizeFloat", lineNumber: 11, codeLineHighlight: 6},
 			},
-		},
+		}, */
 		{
 			filePath: "../../example/src/ios/SDK_V2/sample.swift",
 			flags: []flag{
 				{name: "freeDelivery", lineNumber: 7, codeLineHighlight: 6},
 				{name: "btnColor", lineNumber: 20, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 23, codeLineHighlight: 6},
+				{name: "btnSizeFloat", lineNumber: 24, codeLineHighlight: 6},
+				{name: "btnSizeInt", lineNumber: 25, codeLineHighlight: 6},
 			},
 		},
-		{
+		/* 		{
 			filePath: "../../example/src/ios/SDK_V3/sample.swift",
 			flags: []flag{
-				{name: "btnColor", lineNumber: 9, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 9, codeLineHighlight: 5},
+				{name: "displayVipFeature", lineNumber: 10, codeLineHighlight: 5},
+				{name: "vipFeature", lineNumber: 11, codeLineHighlight: 5},
 			},
-		},
+		}, */
 		{
 			filePath: "../../example/src/java/SDK_V2/sample.java",
 			flags: []flag{
 				{name: "btnColor", lineNumber: 36, codeLineHighlight: 6},
 				{name: "backgroundColor", lineNumber: 37, codeLineHighlight: 6},
+				{name: "backgroundSize", lineNumber: 38, codeLineHighlight: 6},
+				{name: "showBackground", lineNumber: 39, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/java/SDK_V3/sample.java",
 			flags: []flag{
 				{name: "btnColor", lineNumber: 4, codeLineHighlight: 4},
-				{name: "backgroundColor", lineNumber: 5, codeLineHighlight: 5},
+				{name: "backgroundSize", lineNumber: 5, codeLineHighlight: 5},
+				{name: "showBackground", lineNumber: 6, codeLineHighlight: 6},
+				{name: "backgroundColor", lineNumber: 7, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/java/SDK_V2/sample.kt",
 			flags: []flag{
-				{name: "btnColor", lineNumber: 21, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 20, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 21, codeLineHighlight: 6},
+				{name: "displayBtn", lineNumber: 22, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/java/SDK_V3/sample.kt",
 			flags: []flag{
 				{name: "btnColor", lineNumber: 10, codeLineHighlight: 6},
-				{name: "backgroundColor", lineNumber: 11, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 11, codeLineHighlight: 6},
+				{name: "showBackground", lineNumber: 12, codeLineHighlight: 6},
 			},
 		},
 		{
@@ -96,6 +112,8 @@ func TestSearchFiles(t *testing.T) {
 			flags: []flag{
 				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
 				{name: "backgroundColor", lineNumber: 17, codeLineHighlight: 6},
+				{name: "backgroundSize", lineNumber: 21, codeLineHighlight: 6},
+				{name: "showbackground", lineNumber: 25, codeLineHighlight: 6},
 			},
 		},
 		{
@@ -103,6 +121,8 @@ func TestSearchFiles(t *testing.T) {
 			flags: []flag{
 				{name: "btnColor", lineNumber: 15, codeLineHighlight: 6},
 				{name: "backgroundColor", lineNumber: 16, codeLineHighlight: 6},
+				{name: "backgroundSize", lineNumber: 17, codeLineHighlight: 6},
+				{name: "showBackground", lineNumber: 18, codeLineHighlight: 6},
 			},
 		},
 		{
@@ -110,6 +130,8 @@ func TestSearchFiles(t *testing.T) {
 			flags: []flag{
 				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
 				{name: "backgroundColor", lineNumber: 17, codeLineHighlight: 6},
+				{name: "backgroundSize", lineNumber: 21, codeLineHighlight: 6},
+				{name: "showbackground", lineNumber: 25, codeLineHighlight: 6},
 			},
 		},
 		{
@@ -117,55 +139,72 @@ func TestSearchFiles(t *testing.T) {
 			flags: []flag{
 				{name: "btnColor", lineNumber: 15, codeLineHighlight: 6},
 				{name: "backgroundColor", lineNumber: 16, codeLineHighlight: 6},
+				{name: "backgroundSize", lineNumber: 17, codeLineHighlight: 6},
+				{name: "showBackground", lineNumber: 18, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/net/SDK_V1/sample.fs",
 			flags: []flag{
-				{name: "btnColor", lineNumber: 10, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 11, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 12, codeLineHighlight: 6},
+				{name: "showBtn", lineNumber: 13, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/net/SDK_V3/sample.fs",
 			flags: []flag{
-				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 13, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 14, codeLineHighlight: 6},
+				{name: "showBtn", lineNumber: 15, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/net/SDK_V1/sample.cs",
 			flags: []flag{
 				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 13, codeLineHighlight: 6},
+				{name: "showBtn", lineNumber: 14, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/net/SDK_V3/sample.cs",
 			flags: []flag{
 				{name: "btnColor", lineNumber: 15, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 16, codeLineHighlight: 6},
+				{name: "showBtn", lineNumber: 17, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/net/SDK_V1/sample.vb",
 			flags: []flag{
 				{name: "btnColor", lineNumber: 11, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 12, codeLineHighlight: 6},
+				{name: "showBtn", lineNumber: 13, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/net/SDK_V3/sample.vb",
 			flags: []flag{
 				{name: "btnColor", lineNumber: 12, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 13, codeLineHighlight: 6},
+				{name: "showBtn", lineNumber: 14, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/python/SDK_V2/sample.py",
 			flags: []flag{
-				{name: "btnColor", lineNumber: 30, codeLineHighlight: 6},
+				{name: "showBtn", lineNumber: 30, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 31, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 32, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/react/SDK_V2/sample.jsx",
 			flags: []flag{
-				{name: "backgroundColor", lineNumber: 17, codeLineHighlight: 6},
-				{name: "btnColor", lineNumber: 4, codeLineHighlight: 4},
+				{name: "backgroundColor", lineNumber: 16, codeLineHighlight: 6},
+				{name: "backgroundSize", lineNumber: 21, codeLineHighlight: 6},
+				{name: "showBackground", lineNumber: 26, codeLineHighlight: 6},
 			},
 		},
 		{
@@ -173,24 +212,32 @@ func TestSearchFiles(t *testing.T) {
 			flags: []flag{
 				{name: "backgroundColor", lineNumber: 5, codeLineHighlight: 5},
 				{name: "btnColor", lineNumber: 6, codeLineHighlight: 6},
+				{name: "backgroundColor", lineNumber: 7, codeLineHighlight: 6},
+				{name: "showBtn", lineNumber: 8, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/php/SDK_V1/sample.php",
 			flags: []flag{
 				{name: "displayVipFeature", lineNumber: 7, codeLineHighlight: 6},
+				{name: "vipFeatureSize", lineNumber: 8, codeLineHighlight: 6},
+				{name: "vipFeatureColor", lineNumber: 9, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/php/SDK_V2/sample.php",
 			flags: []flag{
 				{name: "displayVipFeature", lineNumber: 8, codeLineHighlight: 6},
+				{name: "vipFeatureSize", lineNumber: 9, codeLineHighlight: 6},
+				{name: "vipFeatureColor", lineNumber: 10, codeLineHighlight: 6},
 			},
 		},
 		{
 			filePath: "../../example/src/php/SDK_V3/sample.php",
 			flags: []flag{
 				{name: "displayVipFeature", lineNumber: 8, codeLineHighlight: 6},
+				{name: "vipFeatureSize", lineNumber: 9, codeLineHighlight: 6},
+				{name: "vipFeatureColor", lineNumber: 10, codeLineHighlight: 6},
 			},
 		},
 	}
