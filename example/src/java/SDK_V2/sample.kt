@@ -17,8 +17,10 @@ Flagship.builder(applicationContext, "my_env_id", "my_api_key")
             }
             .start()
 
-
 val color = Flagship.getModification("btnColor", "#0e5fe3", true)
+val size = Flagship.getModification("btnSize", 13, true)
+val display = Flagship.getModification("displayBtn", true, true)
+
 button.setBackgroundColor(Color.parseColor(color))
 
 ---OR---
