@@ -9,5 +9,7 @@ Private Sub SurroundingSub()
     Dim visitor As [let] = client.NewVisitor("visitor_id", context)
     visitor.FetchFlags();
 
-    Dim btnColorFlag As [let] = visitor.GetFlag("btnColor", 'red');
+    Dim btnColorFlag As [let] = visitor.GetFlag("btnColor", "red");
+    Dim btnSizeFlag As [let] = visitor.GetFlag("btnSize", 13);
+    Dim showBtnFlag As [let] = visitor.GetFlag("showBtn", True);
 End Sub
