@@ -117,7 +117,7 @@ var LanguageRegexes = []LanguageRegex{
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\]\s*getModification:@.+?\]`, // SDK iOS V2
-				FieldRegex:    `\s*['"](.+?)['"]`,
+				FieldRegex:    `\s*['"](.+?)['"](?:\s*)default(?:String|Double|Bool|Float|Int|Json|Array):\@?\s*(['"](.+?)['"]|YES|NO|TRUE|FALSE|true|false|\d*\.?\d+)?`,
 			},
 			{
 				FunctionRegex: `(?s)\s*getFlagWithKey:@.+?\]`, // SDK iOS V3

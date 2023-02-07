@@ -100,12 +100,30 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 		lineNumber := getLineFromPos(fileContentStr, flagIndex[0])
 		codeLineHighlight := getLineFromPos(code, strings.Index(code, keyWrapper))
 
-		var flagType string = "text"
+		var flagType string = "string"
 		var flagTypeInterface interface{}
 
 		r, _ := regexp.Compile(`[^\w#]`)
 
 		json.Unmarshal([]byte(defaultValue), &flagTypeInterface)
+
+		if match := r.MatchString(defaultValue); match {
+			flagType = "unknown"
+		}
+
+		if defaultValue[0:1] == "\"" {
+			defaultValue = strings.Trim(defaultValue, "\"")
+			flagType = "string"
+		}
+
+		if defaultValue == "TRUE" || defaultValue == "YES" || defaultValue == "True" {
+			defaultValue = "true"
+			flagType = "boolean"
+		}
+		if defaultValue == "FALSE" || defaultValue == "NO" || defaultValue == "False" {
+			defaultValue = "false"
+			flagType = "boolean"
+		}
 
 		if _, isNumber := flagTypeInterface.(float64); isNumber {
 			flagType = "number"
@@ -113,10 +131,6 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 
 		if _, isBool := flagTypeInterface.(bool); isBool {
 			flagType = "boolean"
-		}
-
-		if match := r.MatchString(defaultValue); match {
-			flagType = "unknown"
 		}
 
 		results = append(results, model.SearchResult{
