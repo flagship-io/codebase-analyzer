@@ -32,21 +32,21 @@ func TestSearchFiles(t *testing.T) {
 		{
 			filePath: "../../example/src/go/SDK_V2/sample.go",
 			flags: []flag{
-				{name: "btnColor", lineNumber: 36, codeLineHighlight: 6},
-				{name: "btnSize", lineNumber: 37, codeLineHighlight: 6},
-				{name: "showBtn", lineNumber: 38, codeLineHighlight: 6},
+				{name: "btnColor", lineNumber: 31, codeLineHighlight: 6},
+				{name: "btnSize", lineNumber: 32, codeLineHighlight: 6},
+				{name: "showBtn", lineNumber: 33, codeLineHighlight: 6},
 			},
 		},
-		/* 		{
+		{
 			filePath: "../../example/src/ios/SDK_V2/sample.m",
-			flags:    []flag{
+			flags: []flag{
 				{name: "btnColor", lineNumber: 21, codeLineHighlight: 6},
 				{name: "showBtn", lineNumber: 22, codeLineHighlight: 6},
 				{name: "btnSize", lineNumber: 23, codeLineHighlight: 6},
 				{name: "btnSizeFloat", lineNumber: 24, codeLineHighlight: 6},
 			},
-		}, */
-		/* 		{
+		},
+		{
 			filePath: "../../example/src/ios/SDK_V3/sample.m",
 			flags: []flag{
 				{name: "btnColor", lineNumber: 8, codeLineHighlight: 6},
@@ -54,7 +54,7 @@ func TestSearchFiles(t *testing.T) {
 				{name: "btnSize", lineNumber: 10, codeLineHighlight: 6},
 				{name: "btnSizeFloat", lineNumber: 11, codeLineHighlight: 6},
 			},
-		}, */
+		},
 		{
 			filePath: "../../example/src/ios/SDK_V2/sample.swift",
 			flags: []flag{
