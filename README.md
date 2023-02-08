@@ -9,6 +9,8 @@ Flagship Code Analyzer is a CLI and a docker image that can analyze your codebas
 ## With CLI
 
 ```sh
+go build
+
 export FLAGSHIP_CLIENT_ID=FLAGSHIP_MANAGEMENT_API_CLIENT_ID
 export FLAGSHIP_CLIENT_SECRET=FLAGSHIP_MANAGEMENT_API_CLIENT_SECRET
 export ACCOUNT_ID=FLAGSHIP_ACCOUNT_ID
