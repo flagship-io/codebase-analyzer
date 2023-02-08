@@ -172,7 +172,7 @@ make test
 
 ## Licence
 
-[Apache License.](https://github.com/flagship-io/codebase-analyzer/blob/main/LICENSE)
+[Apache License.](https://github.com/flagship-io/codebase-analyzer/blob/master/LICENSE)
 
 ## About Flagship
 ​
