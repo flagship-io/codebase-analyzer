@@ -27,6 +27,20 @@ export DIRECTORY=./
 docker run -v $(pwd)/your_repo:/your_repo -e FLAGSHIP_CLIENT_ID=FLAGSHIP_MANAGEMENT_API_CLIENT_ID -e FLAGSHIP_CLIENT_SECRET=FLAGSHIP_MANAGEMENT_API_CLIENT_SECRET -e ACCOUNT_ID=FLAGSHIP_ACCOUNT_ID -e ENVIRONMENT_ID=your_env_id -e REPOSITORY_URL=https://gitlab.com/org/repo -e REPOSITORY_BRANCH=master -e DIRECTORY=/your_repo flagshipio/code-analyzer
 ```
 
+## With Homebrew
+```sh
+export FLAGSHIP_CLIENT_ID=FLAGSHIP_MANAGEMENT_API_CLIENT_ID
+export FLAGSHIP_CLIENT_SECRET=FLAGSHIP_MANAGEMENT_API_CLIENT_SECRET
+export ACCOUNT_ID=FLAGSHIP_ACCOUNT_ID
+export ENVIRONMENT_ID=FLAGSHIP_ENVIRONMENT_ID
+export REPOSITORY_URL=https://gitlab.com/org/repo
+export REPOSITORY_BRANCH=master
+export DIRECTORY=./
+
+brew tap flagship-io/flagship
+brew install codebase-analyzer
+```
+
 ## Supported file languages
 - .cs .fs
 - .go
