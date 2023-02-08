@@ -11,7 +11,46 @@ import (
 
 	"github.com/flagship-io/codebase-analyzer/internal/model"
 	"github.com/flagship-io/codebase-analyzer/pkg/config"
+	"github.com/thoas/go-funk"
 )
+
+func GetFlagType(defaultValue string) (string, string) {
+
+	var flagType string = "string"
+	var flagTypeInterface interface{}
+
+	r, _ := regexp.Compile(`[^\w#]`)
+
+	json.Unmarshal([]byte(defaultValue), &flagTypeInterface)
+
+	if match := r.MatchString(defaultValue); match {
+		flagType = "unknown"
+	}
+
+	if defaultValue[0:1] == "\"" {
+		defaultValue = strings.Trim(defaultValue, "\"")
+		flagType = "string"
+	}
+
+	if funk.ContainsString([]string{"TRUE", "YES", "True"}, defaultValue) {
+		defaultValue = "true"
+		flagType = "boolean"
+	}
+	if funk.ContainsString([]string{"FALSE", "NO", "False"}, defaultValue) {
+		defaultValue = "false"
+		flagType = "boolean"
+	}
+
+	if _, isNumber := flagTypeInterface.(float64); isNumber {
+		flagType = "number"
+	}
+
+	if _, isBool := flagTypeInterface.(bool); isBool {
+		flagType = "boolean"
+	}
+
+	return flagType, defaultValue
+}
 
 // SearchFiles search code pattern in files and return results and error
 func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileSearchResult) {
@@ -100,42 +139,11 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 		lineNumber := getLineFromPos(fileContentStr, flagIndex[0])
 		codeLineHighlight := getLineFromPos(code, strings.Index(code, keyWrapper))
 
-		var flagType string = "string"
-		var flagTypeInterface interface{}
-
-		r, _ := regexp.Compile(`[^\w#]`)
-
-		json.Unmarshal([]byte(defaultValue), &flagTypeInterface)
-
-		if match := r.MatchString(defaultValue); match {
-			flagType = "unknown"
-		}
-
-		if defaultValue[0:1] == "\"" {
-			defaultValue = strings.Trim(defaultValue, "\"")
-			flagType = "string"
-		}
-
-		if defaultValue == "TRUE" || defaultValue == "YES" || defaultValue == "True" {
-			defaultValue = "true"
-			flagType = "boolean"
-		}
-		if defaultValue == "FALSE" || defaultValue == "NO" || defaultValue == "False" {
-			defaultValue = "false"
-			flagType = "boolean"
-		}
-
-		if _, isNumber := flagTypeInterface.(float64); isNumber {
-			flagType = "number"
-		}
-
-		if _, isBool := flagTypeInterface.(bool); isBool {
-			flagType = "boolean"
-		}
+		flagType, defaultValue_ := GetFlagType(defaultValue)
 
 		results = append(results, model.SearchResult{
 			FlagKey:           key,
-			FlagDefaultValue:  defaultValue,
+			FlagDefaultValue:  defaultValue_,
 			FlagType:          flagType,
 			CodeLines:         code,
 			CodeLineHighlight: codeLineHighlight,
