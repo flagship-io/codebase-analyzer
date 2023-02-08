@@ -6,3 +6,5 @@ $visitor->updateContext("isVip", true);
 $visitor->fetchFlags();
 
 $flag = $visitor->getFlag("displayVipFeature", false);
+$flag = $visitor->getFlag("vipFeatureSize", 13);
+$flag = $visitor->getFlag("vipFeatureColor", "red");

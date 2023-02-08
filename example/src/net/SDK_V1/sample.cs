@@ -10,3 +10,6 @@ var visitor = client.NewVisitor("visitor_id", context);
 await visitor.SynchronizeModifications();
 
 var btnColorFlag = visitor.GetModification("btnColor", "red", true);
+var btnSizeFlag = visitor.GetModification("btnSize", 13, true);
+var showBtnFlag = visitor.GetModification("showBtn", false, true);
+

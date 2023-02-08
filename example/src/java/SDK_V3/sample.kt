@@ -7,6 +7,7 @@ val visitor1 = Flagship.newVisitor("visitor_1")
 val visitor1 = Flagship.newVisitor("visitor_1").build()
 visitor1.updateContext("isVip", true)
 visitor1.fetchFlags().invokeOnCompletion {
-    val btnColorFlag = visitor1.getFlag("btnColor", false)
-    val backgroundColorFlag = visitor1.getFlag("backgroundColor", false)
+    val btnColorFlag = visitor1.getFlag("btnColor", "#000000")
+    val btnSizeFlag = visitor1.getFlag("btnSize", 12)
+    val showBackgroundFlag = visitor1.getFlag("showBackground", false)
 }

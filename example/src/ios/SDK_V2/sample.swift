@@ -17,7 +17,12 @@ Flagship.sharedInstance.synchronizeModifications { (result) in
 
 
 // Retrieve modification and activate
-let title = FlagShip.sharedInstance.getModification("btnColor", defaultString: "More Infos", activate: true)
+let title = FlagShip.sharedInstance.getModification("btnColor", defaultString: "#000000", activate: true)
+
+// Retrieve modification and activate
+let title = FlagShip.sharedInstance.getModification("btnSize", defaultDouble: 13, activate: true)
+let title = FlagShip.sharedInstance.getModification("btnSizeFloat", defaultFloat: 13.1, activate: true)
+let title = FlagShip.sharedInstance.getModification("btnSizeInt", defaultInt: 13.00, activate: true)
 
 
 

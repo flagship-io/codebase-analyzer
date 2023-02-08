@@ -19,6 +19,9 @@ FSConfig * config = [[FSConfig alloc] init:FlagshipModeDECISION_API timeout:0.2]
 
 // Retrieve modification and activate
  NSString * title = [[Flagship sharedInstance] getModification:@"btnColor" defaultString:@"More Infos" activate:YES];
+ NSString * title = [[Flagship sharedInstance] getModification:@"showBtn" defaultBool:TRUE activate:YES];
+ NSString * title = [[Flagship sharedInstance] getModification:@"btnSize" defaultInt:13 activate:YES];
+ NSString * title = [[Flagship sharedInstance] getModification:@"btnSizeFloat" defaultFloat:14.5 activate:YES];
 
 
 
