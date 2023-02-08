@@ -17,6 +17,14 @@ const modificationsOutput = fsVisitorInstance.getModifications(
             key: "backgroundColor", // required
             defaultValue: "green", // required
         },
+        {
+            key: "backgroundSize", // required
+            defaultValue: 16, // required
+        },
+        {
+            key: "showbackground", // required
+            defaultValue: true, // required
+        },
     ]
 );
 

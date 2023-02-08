@@ -29,10 +29,8 @@ func main() {
 	fsVisitor.UpdateContext(newContext)
 
 	discountName, err := fsVisitor.GetModificationString("btnColor", "VString", true)
-	discountName, err := fsVisitor.GetModificationNumber("btnColor", "VNumber", true)
-	discountName, err := fsVisitor.GetModificationBool("btnColor", "VBool", true)
-	discountName, err := fsVisitor.GetModificationArray("btnColor", "VArray", true)
-	discountName, err := fsVisitor.GetModificationObject("btnColor", "VObject", true)
+	discountName, err := fsVisitor.GetModificationNumber("btnSize", 13, true)
+	discountName, err := fsVisitor.GetModificationBool("showBtn", false, true)
 
 	// If there is not error (and if there is, your value will still be set to defaut), you can use your modification value in your business logic
 	discountValue := getDiscountFromDB(discountName)
