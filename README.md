@@ -52,6 +52,8 @@ export DIRECTORY=./
 
 brew tap flagship-io/flagship
 brew install codebase-analyzer
+
+codebase-analyzer
 ```
 
 ### Supported file languages
