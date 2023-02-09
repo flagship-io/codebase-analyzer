@@ -27,7 +27,7 @@ var LanguageRegexes = []LanguageRegex{
 			},
 			{
 				FunctionRegex:   `(?s)useFsFlag\(.+?\)`, // SDK React V3
-				FieldRegex:      `useFsFlag\(['"]?\s*(.+?)['"](?:.\s*)\s*(.*?)\s*(?:\)\s+)`,
+				FieldRegex:      `useFsFlag\(['"]?\s*(.+?)['"](?:.\s*)\s*(.*?)\s*(?:\)\s*\n)`,
 				HasMultipleKeys: true,
 			},
 			{
