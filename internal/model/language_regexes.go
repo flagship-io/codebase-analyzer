@@ -47,7 +47,7 @@ var LanguageRegexes = []LanguageRegex{
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.GetModification(String|Number|Bool|Object|Array)\(.+?\)`, // SDK GO V2
-				FieldRegex:    `\s*['"](.+?)['"](?:,\s*)\s*(.*?)\s*(?:,|\))`,
+				FieldRegex:    `\w+\s*[:=][^"\n]*\(["'](\w+)['"],\s*("[^"]*"|\d+|true|false)(?:,\s*(?:true|false|\d+|"[^"]*"))?\)`,
 			},
 		},
 	},
@@ -56,7 +56,7 @@ var LanguageRegexes = []LanguageRegex{
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.get_modification\(.+?\)`, // SDK PYTHON V2
-				FieldRegex:    `\s*['"](.+?)['"](?:,\s*)\s*(.*?)\s*(?:,|\))`,
+				FieldRegex:    `\w+\s*[:=][^"\n]*\(["'](\w+)['"],\s*("[^"]*"|\d+|true|false|False|True)(?:,\s*(?:true|false|\d+|"[^"]*"))?\)`,
 			},
 		},
 	},
@@ -65,11 +65,11 @@ var LanguageRegexes = []LanguageRegex{
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.getModification\(.+?\)`, // SDK JAVA V2
-				FieldRegex:    `getModification\("(.*?)",\s*(.*?)\s*(?:,|\))`,
+				FieldRegex:    `\w+\s*[:=][^"\n]*\(["'](\w+)['"],\s*("[^"]*"|\d+|true|false|False|True)(?:,\s*(?:true|false|\d+|"[^"]*"))?\)`,
 			},
 			{
 				FunctionRegex: `(?s)\.getFlag\(.+?\)`, // SDK JAVA V3
-				FieldRegex:    `getFlag\("(.*?)",\s*(.*?)\s*(?:,|\))`,
+				FieldRegex:    `getFlag[(](?:\s*(".*"),\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
 			},
 		},
 	},
@@ -78,11 +78,11 @@ var LanguageRegexes = []LanguageRegex{
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\-\>getModification\(.+?\)`, // SDK PHP V1 && SDK PHP V2
-				FieldRegex:    `getModification\("(.*?)",\s*(.*?)\s*(?:,|\))`,
+				FieldRegex:    `\w+\s*[:=][^"\n]*\(["'](\w+)['"],\s*("[^"]*"|\d+|true|false|False|True)(?:,\s*(?:true|false|\d+|"[^"]*"))?\)`,
 			},
 			{
 				FunctionRegex: `(?s)\-\>getFlag\(.+?\)`, // SDK PHP V3
-				FieldRegex:    `getFlag\(['"](.+?)['"](?:.\s*)\s*(.*?)\s*(?:,|\))`,
+				FieldRegex:    `getFlag[(](?:\s*(".*"),\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
 			},
 		},
 	},
@@ -91,11 +91,11 @@ var LanguageRegexes = []LanguageRegex{
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.getModification\(.+?\)`, // SDK ANDROID V2
-				FieldRegex:    `getModification\("(.*?)",\s*(.*?)\s*(?:,|\))`,
+				FieldRegex:    `\w+\s*[:=][^"\n]*\(["'](\w+)['"],\s*("[^"]*"|\d+|true|false|False|True)(?:,\s*(?:true|false|\d+|"[^"]*"))?\)`,
 			},
 			{
 				FunctionRegex: `(?s)\.getFlag\(.+?\)`, // SDK ANDROID V3
-				FieldRegex:    `getFlag\("(.*?)",\s*(.*?)\s*(?:,|\))`,
+				FieldRegex:    `getFlag[(](?:\s*(".*"),\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
 			},
 		},
 	},
