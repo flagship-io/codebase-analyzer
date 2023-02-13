@@ -27,7 +27,7 @@ var LanguageRegexes = []LanguageRegex{
 			},
 			{
 				FunctionRegex:   `(?s)useFsFlag\(.+?\)`, // SDK React V3
-				FieldRegex:      `useFsFlag\(['"]?\s*(.+?)['"](?:.\s*)\s*(.*?)\s*(?:\)\s*\n)`,
+				FieldRegex:      `useFsFlag[(](?:\s*(".*"),\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
 				HasMultipleKeys: true,
 			},
 			{
@@ -37,7 +37,7 @@ var LanguageRegexes = []LanguageRegex{
 			},
 			{
 				FunctionRegex:   `(?s)getFlag\(.+?\)`, // SDK JS V3
-				FieldRegex:      `getFlag\(['"]?\s*(.+?)['"](?:.\s*)\s*(.*?)\s*(?:\)\.)`,
+				FieldRegex:      `getFlag[(](?:\s*(".*"),\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
 				HasMultipleKeys: true,
 			},
 		},
