@@ -28,11 +28,6 @@ func GetFlagType(defaultValue string) (string, string) {
 	}
 
 	if (defaultValue[0:1] == "\"" || defaultValue[0:1] == "'") && (defaultValue[len(defaultValue)-1:] == "\"" || defaultValue[len(defaultValue)-1:] == "'") {
-		defaultValue = strings.TrimPrefix(defaultValue, "\"")
-		defaultValue = strings.TrimPrefix(defaultValue, "'")
-		defaultValue = strings.TrimSuffix(defaultValue, "\"")
-		defaultValue = strings.TrimSuffix(defaultValue, "'")
-
 		flagType = "string"
 	}
 
@@ -140,16 +135,13 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 			keyWrapper = fileContentStr[flagIndex[0]-nbCharsWrapping : flagIndex[1]+nbCharsWrapping]
 		}
 
-		key_ := strings.Trim(key, "\"")
-		key_ = strings.Trim(key_, "'")
-
 		lineNumber := getLineFromPos(fileContentStr, flagIndex[0])
 		codeLineHighlight := getLineFromPos(code, strings.Index(code, keyWrapper))
 
 		flagType, defaultValue_ := GetFlagType(defaultValue)
 
 		results = append(results, model.SearchResult{
-			FlagKey:           key_,
+			FlagKey:           key,
 			FlagDefaultValue:  defaultValue_,
 			FlagType:          flagType,
 			CodeLines:         code,

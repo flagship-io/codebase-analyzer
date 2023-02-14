@@ -27,7 +27,7 @@ var LanguageRegexes = []LanguageRegex{
 			},
 			{
 				FunctionRegex:   `(?s)useFsFlag\(.+?\)`, // SDK React V3
-				FieldRegex:      `useFsFlag[(](?:\s*(["'].*['"]),\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
+				FieldRegex:      `useFsFlag[(](?:\s*['"](.*)['"]\s*,\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
 				HasMultipleKeys: true,
 			},
 			{
@@ -37,7 +37,7 @@ var LanguageRegexes = []LanguageRegex{
 			},
 			{
 				FunctionRegex:   `(?s)getFlag\(.+?\)`, // SDK JS V3
-				FieldRegex:      `getFlag[(](?:\s*(["'].*['"]),\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
+				FieldRegex:      `getFlag[(](?:\s*["'](.*)["']\s*,\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
 				HasMultipleKeys: true,
 			},
 		},
@@ -69,7 +69,7 @@ var LanguageRegexes = []LanguageRegex{
 			},
 			{
 				FunctionRegex: `(?s)\.getFlag\(.+?\)`, // SDK JAVA V3
-				FieldRegex:    `\.getFlag[(](?:\s*(["'].*["']),\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`,
+				FieldRegex:    `\.getFlag[(](?:\s*["'](.*)["']\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`,
 			},
 		},
 	},
@@ -82,7 +82,7 @@ var LanguageRegexes = []LanguageRegex{
 			},
 			{
 				FunctionRegex: `(?s)\-\>getFlag\(.+?\)`, // SDK PHP V3
-				FieldRegex:    `\-\>getFlag[(](?:\s*(["'].*["']),\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`,
+				FieldRegex:    `\-\>getFlag[(](?:\s*["'](.*)["']\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`,
 			},
 		},
 	},
@@ -95,7 +95,7 @@ var LanguageRegexes = []LanguageRegex{
 			},
 			{
 				FunctionRegex: `(?s)\.getFlag\(.+?\)`, // SDK ANDROID V3
-				FieldRegex:    `\.getFlag[(](?:\s*(["'].*["']),\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`,
+				FieldRegex:    `\.getFlag[(](?:\s*["'](.*)["']\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`,
 			},
 		},
 	},
@@ -108,7 +108,7 @@ var LanguageRegexes = []LanguageRegex{
 			},
 			{
 				FunctionRegex: `(?s)\.getFlag\(key: ['"](.+?)['"]`, // SDK iOS V3
-				FieldRegex:    `\.getFlag[(]\s*key\s*:\s*(?:\s*(["'].*["']),\s*defaultValue\s*:\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`,
+				FieldRegex:    `\.getFlag[(]\s*key\s*:\s*(?:\s*["'](.*)["']\s*,\s*defaultValue\s*:\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`,
 			},
 		},
 	},
