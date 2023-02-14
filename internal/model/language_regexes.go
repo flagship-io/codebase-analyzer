@@ -117,11 +117,11 @@ var LanguageRegexes = []LanguageRegex{
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\]\s*getModification:@.+?\]`, // SDK iOS V2
-				FieldRegex:    `\s*['"](.+?)['"](?:\s*)default(?:String|Double|Bool|Float|Int|Json|Array):\@?\s*(['"](.+?)['"]|YES|NO|TRUE|FALSE|true|false|\d*\.?\d+)?`,
+				FieldRegex:    `\s*['"](.+?)['"](?:\s*)default(?:String|Double|Bool|Float|Int|Json|Array):\@?\s*(['"].+?['"]|YES|NO|TRUE|FALSE|true|false|[+-]?(?:\d*[.])?\d+)?`,
 			},
 			{
 				FunctionRegex: `(?s)\s*getFlagWithKey:@.+?\]`, // SDK iOS V3
-				FieldRegex:    `\s*getFlagWithKey:@['"](.+?)['"](?:\s*)['"]?defaultValue['"]?\s*\:\@?\s*(.+?)\s*[\]]`,
+				FieldRegex:    `\s*getFlagWithKey\s*:\s*\@['"](.+?)['"](?:\s*)['"]?defaultValue['"]?\s*\:\s*\@?\s*(.+?)\s*[\]]`,
 			},
 		},
 	},
