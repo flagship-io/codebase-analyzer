@@ -27,7 +27,7 @@ var LanguageRegexes = []LanguageRegex{
 			},
 			{
 				FunctionRegex:   `(?s)useFsFlag\(.+?\)`, // SDK React V3
-				FieldRegex:      `useFsFlag[(](?:\s*(".*"),\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
+				FieldRegex:      `useFsFlag[(](?:\s*(["'].*['"]),\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
 				HasMultipleKeys: true,
 			},
 			{
@@ -37,7 +37,7 @@ var LanguageRegexes = []LanguageRegex{
 			},
 			{
 				FunctionRegex:   `(?s)getFlag\(.+?\)`, // SDK JS V3
-				FieldRegex:      `getFlag[(](?:\s*(".*"),\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
+				FieldRegex:      `getFlag[(](?:\s*(["'].*['"]),\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
 				HasMultipleKeys: true,
 			},
 		},
@@ -47,7 +47,7 @@ var LanguageRegexes = []LanguageRegex{
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.GetModification(String|Number|Bool|Object|Array)\(.+?\)`, // SDK GO V2
-				FieldRegex:    `\w+\s*[:=][^"\n]*\(["'](\w+)['"],\s*("[^"]*"|\d+|true|false)(?:,\s*(?:true|false|\d+|"[^"]*"))?\)`,
+				FieldRegex:    `\w+\s*[:=][^"\n]*\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
 			},
 		},
 	},
@@ -56,7 +56,7 @@ var LanguageRegexes = []LanguageRegex{
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.get_modification\(.+?\)`, // SDK PYTHON V2
-				FieldRegex:    `\w+\s*[:=][^"\n]*\(["'](\w+)['"],\s*("[^"]*"|\d+|true|false|False|True)(?:,\s*(?:true|false|\d+|"[^"]*"))?\)`,
+				FieldRegex:    `\w+\s*[:=][^"\n]*\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
 			},
 		},
 	},
@@ -65,7 +65,7 @@ var LanguageRegexes = []LanguageRegex{
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.getModification\(.+?\)`, // SDK JAVA V2
-				FieldRegex:    `\w+\s*[:=][^"\n]*\(["'](\w+)['"],\s*("[^"]*"|\d+|true|false|False|True)(?:,\s*(?:true|false|\d+|"[^"]*"))?\)`,
+				FieldRegex:    `\w+\s*[:=][^"\n]*\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
 			},
 			{
 				FunctionRegex: `(?s)\.getFlag\(.+?\)`, // SDK JAVA V3
@@ -78,7 +78,7 @@ var LanguageRegexes = []LanguageRegex{
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\-\>getModification\(.+?\)`, // SDK PHP V1 && SDK PHP V2
-				FieldRegex:    `\w+\s*[:=][^"\n]*\(["'](\w+)['"],\s*("[^"]*"|\d+|true|false|False|True)(?:,\s*(?:true|false|\d+|"[^"]*"))?\)`,
+				FieldRegex:    `\w+\s*[:=][^"\n]*\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
 			},
 			{
 				FunctionRegex: `(?s)\-\>getFlag\(.+?\)`, // SDK PHP V3
@@ -91,7 +91,7 @@ var LanguageRegexes = []LanguageRegex{
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.getModification\(.+?\)`, // SDK ANDROID V2
-				FieldRegex:    `\w+\s*[:=][^"\n]*\(["'](\w+)['"],\s*("[^"]*"|\d+|true|false|False|True)(?:,\s*(?:true|false|\d+|"[^"]*"))?\)`,
+				FieldRegex:    `\w+\s*[:=][^"\n]*\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
 			},
 			{
 				FunctionRegex: `(?s)\.getFlag\(.+?\)`, // SDK ANDROID V3
@@ -104,11 +104,11 @@ var LanguageRegexes = []LanguageRegex{
 		FlagRegexes: []FlagRegex{
 			{
 				FunctionRegex: `(?s)\.getModification\(.+?\)`, // SDK iOS V2
-				FieldRegex:    `\s*['"](.+?)['"](?:,\s*)['"]?default(?:String|Double|Bool|Float|Int|Json|Array)['"]?\s*\:\s*(.+?)\s*[\,]`,
+				FieldRegex:    `\w+\s*[:=][^"\n]*\(\s*["'](\w+)['"]\s*,\s*default(?:String|Double|Float|Int|Bool|Json|Array)\s*:\s*([]"'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)\s*(?:,\s*activate\s*:\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
 			},
 			{
 				FunctionRegex: `(?s)\.getFlag\(key: ['"](.+?)['"]`, // SDK iOS V3
-				FieldRegex:    `['"]?key['"]?\s*\:\s*['"](.+?)['"](?:.*\s*)['"]?defaultValue['"]?\s*\:\s*(.+?)\s*[\)]`,
+				FieldRegex:    `getFlag[(]\s*key\s*:\s*(?:\s*(".*"),\s*defaultValue\s*:\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
 			},
 		},
 	},
