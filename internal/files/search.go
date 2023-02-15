@@ -19,7 +19,7 @@ func GetFlagType(defaultValue string) (string, string) {
 	var flagType string = "string"
 	var flagTypeInterface interface{}
 
-	r, _ := regexp.Compile(`[^\w#\-]`)
+	r, _ := regexp.Compile(`[\{\}\[\]]`)
 
 	json.Unmarshal([]byte(defaultValue), &flagTypeInterface)
 
