@@ -100,13 +100,10 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 
 			submatchIndexes := regxp.FindAllStringSubmatchIndex(submatch, -1)
 
-			for k, submatchIndex := range submatchIndexes {
+			for _, submatchIndex := range submatchIndexes {
 				if len(submatchIndex) < 6 {
 					log.Printf("Did not find the flag key in file %s. Code : %s", path, submatch)
 					continue
-				}
-				if !flagRegex.HasMultipleKeys && k > 0 {
-					break
 				}
 
 				flagIndexes = append(flagIndexes, []int{

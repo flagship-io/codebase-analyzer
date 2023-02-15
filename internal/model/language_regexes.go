@@ -11,8 +11,7 @@ type LanguageRegex struct {
 }
 
 type FlagRegex struct {
-	FieldRegex      string `json:"field_regex"`
-	HasMultipleKeys bool   `json:"has_multiple_keys"`
+	FieldRegex string `json:"field_regex"`
 }
 
 var LanguageRegexes = []LanguageRegex{
