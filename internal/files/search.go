@@ -85,20 +85,18 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 
 	// Add default regex for flags in commentaries
 	flagRegexes = append(flagRegexes, model.FlagRegex{
-		FunctionRegex: `(?s)fs:flag:(\w+)`,
-		FieldRegex:    `fs:flag:(.+)`,
+		FieldRegex: `fs:flag:(.+)`,
 	})
 
 	results := []model.SearchResult{}
 
 	flagIndexes := [][]int{}
 	for _, flagRegex := range flagRegexes {
-		regxp := regexp.MustCompile(flagRegex.FunctionRegex)
+		regxp := regexp.MustCompile(flagRegex.FieldRegex)
 		flagLineIndexes := regxp.FindAllStringIndex(fileContentStr, -1)
 
 		for _, flagLineIndex := range flagLineIndexes {
 			submatch := fileContentStr[flagLineIndex[0]:flagLineIndex[1]]
-			regxp := regexp.MustCompile(flagRegex.FieldRegex)
 
 			submatchIndexes := regxp.FindAllStringSubmatchIndex(submatch, -1)
 
