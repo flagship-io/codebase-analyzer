@@ -19,13 +19,13 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.[jt]sx?$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FieldRegex: `useFsFlag[(](?:\s*['"](.*)['"]\s*,\s*(".*\s*[^"]*"|[^)]*))\s*[)]`, // SDK React V3
+				FieldRegex: `useFsFlag[(](?:\s*['"](.*)['"]\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`, // SDK React V3
 			},
 			{
 				FieldRegex: `['"]?key['"]?\s*\:\s*['"](.+?)['"](?:.*\s*)['"]?defaultValue['"]?\s*\:\s*(['"].*['"]|[^\r\n\t\f\v,}]+).*[},]?`, // SDK JS V2 && SDK React V2
 			},
 			{
-				FieldRegex: `getFlag[(](?:\s*["'](.*)["']\s*,\s*(".*\s*[^"]*"|[^)]*))\s*[)]`, // SDK JS V3
+				FieldRegex: `getFlag[(](?:\s*["'](.*)["']\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`, // SDK JS V3
 			},
 		},
 	},
