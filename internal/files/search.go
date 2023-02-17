@@ -101,8 +101,17 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 			submatchIndexes := regxp.FindAllStringSubmatchIndex(submatch, -1)
 
 			for _, submatchIndex := range submatchIndexes {
-				if len(submatchIndex) < 6 {
+				if len(submatchIndex) < 3 {
 					log.Printf("Did not find the flag key in file %s. Code : %s", path, submatch)
+					continue
+				}
+
+				if len(submatchIndex) < 6 {
+					log.Printf("Did not find the flag default value in file %s. Code : %s", path, submatch)
+					flagIndexes = append(flagIndexes, []int{
+						flagLineIndex[0] + submatchIndex[2],
+						flagLineIndex[0] + submatchIndex[3],
+					})
 					continue
 				}
 
@@ -118,11 +127,18 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 
 	for _, flagIndex := range flagIndexes {
 		// Extract the code with a certain number of lines
+		defaultValue_ := ""
+		flagType := "unknown"
 		firstLineIndex := getSurroundingLineIndex(fileContentStr, flagIndex[0], true, cfg.NbLineCodeEdges)
 		lastLineIndex := getSurroundingLineIndex(fileContentStr, flagIndex[1], false, cfg.NbLineCodeEdges)
 		code := fileContentStr[firstLineIndex:lastLineIndex]
 		key := fileContentStr[flagIndex[0]:flagIndex[1]]
-		defaultValue := fileContentStr[flagIndex[2]:flagIndex[3]]
+
+		if len(flagIndex) >= 3 {
+			defaultValue := fileContentStr[flagIndex[2]:flagIndex[3]]
+			flagType, defaultValue_ = GetFlagType(defaultValue)
+		}
+
 		// Better value wrapper for code highlighting (5 chars wrapping)
 		keyWrapper := key
 		nbCharsWrapping := 5
@@ -132,8 +148,6 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 
 		lineNumber := getLineFromPos(fileContentStr, flagIndex[0])
 		codeLineHighlight := getLineFromPos(code, strings.Index(code, keyWrapper))
-
-		flagType, defaultValue_ := GetFlagType(defaultValue)
 
 		results = append(results, model.SearchResult{
 			FlagKey:           key,
