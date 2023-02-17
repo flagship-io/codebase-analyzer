@@ -11,9 +11,7 @@ type LanguageRegex struct {
 }
 
 type FlagRegex struct {
-	FunctionRegex   string `json:"function_regex"`
-	FieldRegex      string `json:"field_regex"`
-	HasMultipleKeys bool   `json:"has_multiple_keys"`
+	FieldRegex string `json:"field_regex"`
 }
 
 var LanguageRegexes = []LanguageRegex{
@@ -21,24 +19,13 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.[jt]sx?$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex:   `(?s)useFsModifications\(.+?\)`, // SDK React V2
-				FieldRegex:      `['"]?key['"]?\s*\:\s*['"](.+?)['"](?:.*\s*)['"]?defaultValue['"]?\s*\:\s*(['"].*['"]|[^\r\n\t\f\v ,}]+).*[},]`,
-				HasMultipleKeys: true,
+				FieldRegex: `useFsFlag[(](?:\s*['"](.*)['"]\s*,\s*(".*\s*[^"]*"|[^)]*))\s*[)]`, // SDK React V3
 			},
 			{
-				FunctionRegex:   `(?s)useFsFlag\(.+?\)`, // SDK React V3
-				FieldRegex:      `useFsFlag[(](?:\s*['"](.*)['"]\s*,\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
-				HasMultipleKeys: true,
+				FieldRegex: `['"]?key['"]?\s*\:\s*['"](.+?)['"](?:.*\s*)['"]?defaultValue['"]?\s*\:\s*(['"].*['"]|[^\r\n\t\f\v,}]+).*[},]?`, // SDK JS V2 && SDK React V2
 			},
 			{
-				FunctionRegex:   `(?s)\.getModifications\(.+?\].+?\)`, // SDK JS V2
-				FieldRegex:      `['"]?key['"]?\s*\:\s*['"](.+?)['"](?:.*\s*)['"]?defaultValue['"]?\s*\:\s*(['"].*['"]|[^\r\n\t\f\v ,}]+).*[},]`,
-				HasMultipleKeys: true,
-			},
-			{
-				FunctionRegex:   `(?s)getFlag\(.+?\)`, // SDK JS V3
-				FieldRegex:      `getFlag[(](?:\s*["'](.*)["']\s*,\s*(".*\s*[^"]*"|[^)]*))\s*[)]`,
-				HasMultipleKeys: true,
+				FieldRegex: `getFlag[(](?:\s*["'](.*)["']\s*,\s*(".*\s*[^"]*"|[^)]*))\s*[)]`, // SDK JS V3
 			},
 		},
 	},
@@ -46,8 +33,7 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.go$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\.GetModification(String|Number|Bool|Object|Array)\(.+?\)`, // SDK GO V2
-				FieldRegex:    `\.GetModification(?:String|Number|Bool|Object|Array)\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
+				FieldRegex: `\.GetModification(?:String|Number|Bool|Object|Array)\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`, // SDK GO V2
 			},
 		},
 	},
@@ -55,8 +41,7 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.py$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\.get_modification\(.+?\)`, // SDK PYTHON V2
-				FieldRegex:    `\.get_modification\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|True|False|\d+|"[^"]*"))?\s*\)`,
+				FieldRegex: `\.get_modification\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|True|False|\d+|"[^"]*"))?\s*\)`, // SDK PYTHON V2
 			},
 		},
 	},
@@ -64,12 +49,10 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.java$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\.getModification\(.+?\)`, // SDK JAVA V2
-				FieldRegex:    `\.getModification\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
+				FieldRegex: `\.getModification\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`, // SDK JAVA V2
 			},
 			{
-				FunctionRegex: `(?s)\.getFlag\(.+?\)`, // SDK JAVA V3
-				FieldRegex:    `\.getFlag[(](?:\s*["'](.*)["']\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`,
+				FieldRegex: `\.getFlag[(](?:\s*["'](.*)["']\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`, // SDK JAVA V3
 			},
 		},
 	},
@@ -77,12 +60,10 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.php$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\-\>getModification\(.+?\)`, // SDK PHP V1 && SDK PHP V2
-				FieldRegex:    `\-\>getModification\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
+				FieldRegex: `\-\>getModification\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`, // SDK PHP V1 && SDK PHP V2
 			},
 			{
-				FunctionRegex: `(?s)\-\>getFlag\(.+?\)`, // SDK PHP V3
-				FieldRegex:    `\-\>getFlag[(](?:\s*["'](.*)["']\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`,
+				FieldRegex: `\-\>getFlag[(](?:\s*["'](.*)["']\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`, // SDK PHP V3
 			},
 		},
 	},
@@ -90,12 +71,10 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.kt$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\.getModification\(.+?\)`, // SDK ANDROID V2
-				FieldRegex:    `\.getModification\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
+				FieldRegex: `\.getModification\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`, // SDK ANDROID V2
 			},
 			{
-				FunctionRegex: `(?s)\.getFlag\(.+?\)`, // SDK ANDROID V3
-				FieldRegex:    `\.getFlag[(](?:\s*["'](.*)["']\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`,
+				FieldRegex: `\.getFlag[(](?:\s*["'](.*)["']\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`, // SDK ANDROID V3
 			},
 		},
 	},
@@ -103,12 +82,10 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.swift$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\.getModification\(.+?\)`, // SDK iOS V2
-				FieldRegex:    `\.getModification\(\s*["'](\w+)['"]\s*,\s*default(?:String|Double|Float|Int|Bool|Json|Array)\s*:\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)\s*(?:,\s*activate\s*:\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
+				FieldRegex: `\.getModification\(\s*["'](\w+)['"]\s*,\s*default(?:String|Double|Float|Int|Bool|Json|Array)\s*:\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)\s*(?:,\s*activate\s*:\s*(?:true|false|\d+|"[^"]*"))?\s*\)`, // SDK iOS V2
 			},
 			{
-				FunctionRegex: `(?s)\.getFlag\(key: ['"](.+?)['"]`, // SDK iOS V3
-				FieldRegex:    `\.getFlag[(]\s*key\s*:\s*(?:\s*["'](.*)["']\s*,\s*defaultValue\s*:\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`,
+				FieldRegex: `\.getFlag[(]\s*key\s*:\s*(?:\s*["'](.*)["']\s*,\s*defaultValue\s*:\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`, // SDK iOS V3
 			},
 		},
 	},
@@ -116,12 +93,10 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.m$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\]\s*getModification:@.+?\]`, // SDK iOS V2
-				FieldRegex:    `getModification\s*:\s*@\s*['"](.+?)['"](?:\s*)default(?:String|Double|Bool|Float|Int|Json|Array):\@?\s*(['"].+?['"]|YES|NO|TRUE|FALSE|true|false|[+-]?(?:\d*[.])?\d+)?`,
+				FieldRegex: `getModification\s*:\s*@\s*['"](.+?)['"](?:\s*)default(?:String|Double|Bool|Float|Int|Json|Array):\@?\s*(['"].+?['"]|YES|NO|TRUE|FALSE|true|false|[+-]?(?:\d*[.])?\d+)?`, // SDK iOS V2
 			},
 			{
-				FunctionRegex: `(?s)\s*getFlagWithKey:@.+?\]`, // SDK iOS V3
-				FieldRegex:    `getFlagWithKey\s*:\s*\@['"](.+?)['"](?:\s*)['"]?defaultValue['"]?\s*\:\s*\@?\s*(.+?)\s*[\]]`,
+				FieldRegex: `getFlagWithKey\s*:\s*\@['"](.+?)['"](?:\s*)['"]?defaultValue['"]?\s*\:\s*\@?\s*(.+?)\s*[\]]`, // SDK iOS V3
 			},
 		},
 	},
@@ -129,12 +104,10 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.[fc]s$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\.GetModification\(.+?\)`, // SDK .NET V1
-				FieldRegex:    `\.GetModification\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
+				FieldRegex: `\.GetModification\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`, // SDK .NET V1
 			},
 			{
-				FunctionRegex: `(?s)\.GetFlag\(.+?\)`, // SDK .NET V3
-				FieldRegex:    `\.GetFlag\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
+				FieldRegex: `\.GetFlag\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`, // SDK .NET V3
 			},
 		},
 	},
@@ -142,12 +115,10 @@ var LanguageRegexes = []LanguageRegex{
 		ExtensionRegex: `\.vb$`,
 		FlagRegexes: []FlagRegex{
 			{
-				FunctionRegex: `(?s)\.GetModification\(.+?\)`, // SDK .NET V1
-				FieldRegex:    `\.GetModification\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|True|false|False|\d+|"[^"]*"))?\s*\)`,
+				FieldRegex: `\.GetModification\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|True|false|False|\d+|"[^"]*"))?\s*\)`, // SDK .NET V1
 			},
 			{
-				FunctionRegex: `(?s)\.GetFlag\(.+?\)`, // SDK .NET V3
-				FieldRegex:    `\.GetFlag\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`,
+				FieldRegex: `\.GetFlag\(\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\)`, // SDK .NET V3
 			},
 		},
 	},
