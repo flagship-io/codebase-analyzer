@@ -65,14 +65,14 @@ func TestSearchFiles(t *testing.T) {
 				{name: "btnSizeInt", lineNumber: 25, codeLineHighlight: 6},
 			},
 		},
-		/* 		{
+		{
 			filePath: "../../example/src/ios/SDK_V3/sample.swift",
 			flags: []flag{
-				{name: "btnColor", lineNumber: 9, codeLineHighlight: 5},
-				{name: "displayVipFeature", lineNumber: 10, codeLineHighlight: 5},
-				{name: "vipFeature", lineNumber: 11, codeLineHighlight: 5},
+				{name: "btnColor", lineNumber: 9, codeLineHighlight: 6},
+				{name: "displayVipFeature", lineNumber: 10, codeLineHighlight: 6},
+				{name: "vipFeature", lineNumber: 11, codeLineHighlight: 6},
 			},
-		}, */
+		},
 		{
 			filePath: "../../example/src/java/SDK_V2/sample.java",
 			flags: []flag{
