@@ -71,7 +71,7 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 	for _, extRegex := range model.LanguageRegexes {
 		regxp := regexp.MustCompile(extRegex.ExtensionRegex)
 		if regxp.Match([]byte(ext)) {
-			flagRegexes = extRegex.FlagRegexes
+			flagRegexes = append(flagRegexes, extRegex.FlagRegexes...)
 		}
 	}
 	if len(flagRegexes) == 0 {

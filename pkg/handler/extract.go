@@ -10,6 +10,13 @@ import (
 
 // ExtractFlagsInfo extract all flag usage information for code
 func ExtractFlagsInfo(cfg *config.Config) ([]model.FileSearchResult, error) {
+
+	// Environment variables for the project
+
+	if cfg.SearchCustomRegex != "" {
+		model.AddCustomRegexes(cfg.SearchCustomRegex)
+	}
+
 	// List all files within the current directory
 	filePaths, err := files.ListFiles(cfg.Directory, cfg.FilesToExcludes)
 
