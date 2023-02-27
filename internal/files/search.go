@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"path/filepath"
 	"regexp"
 	"strings"
 
 	"github.com/flagship-io/codebase-analyzer/internal/model"
 	"github.com/flagship-io/codebase-analyzer/pkg/config"
+	"github.com/sirupsen/logrus"
 	"github.com/thoas/go-funk"
 )
 
@@ -102,12 +102,16 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 
 			for _, submatchIndex := range submatchIndexes {
 				if len(submatchIndex) < 3 {
-					log.Printf("Did not find the flag key in file %s. Code : %s", path, submatch)
+					logrus.WithFields(logrus.Fields{
+						"reason": "Did not find the flag key in file " + path + ". Code: " + submatch,
+					}).Error("Key not found, Flag not created")
 					continue
 				}
 
 				if len(submatchIndex) < 6 {
-					log.Printf("Did not find the flag default value in file %s. Code : %s", path, submatch)
+					logrus.WithFields(logrus.Fields{
+						"reason": "Did not find the flag default value in file " + path + " . Code: " + submatch,
+					}).Warn("Type unknown, Flag not created")
 					flagIndexes = append(flagIndexes, []int{
 						flagLineIndex[0] + submatchIndex[2],
 						flagLineIndex[0] + submatchIndex[3],
