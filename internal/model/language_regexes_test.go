@@ -8,7 +8,7 @@ import (
 )
 
 func TestCustomRegex(t *testing.T) {
-	AddCustomRegexes(`[{"extension_regex":".tsx?","flag_regexes":[{"field_regex":"\\s*['\"](.+?)['\"]"}]}]`)
+	AddCustomRegexes(`[{"extension_regex":".tsx?","flag_regexes":["\\s*['\"](.+?)['\"]"]}]`)
 
 	found := funk.Find(LanguageRegexes, func(languageRegex LanguageRegex) bool {
 		return languageRegex.ExtensionRegex == ".tsx?"
@@ -22,5 +22,5 @@ func TestCustomRegex(t *testing.T) {
 
 	assert.Equal(t, ".tsx?", foundLanguageRegex.ExtensionRegex)
 	assert.Equal(t, 1, len(foundLanguageRegex.FlagRegexes))
-	assert.Equal(t, "\\s*['\"](.+?)['\"]", foundLanguageRegex.FlagRegexes[0].FieldRegex)
+	assert.Equal(t, "\\s*['\"](.+?)['\"]", foundLanguageRegex.FlagRegexes[0])
 }

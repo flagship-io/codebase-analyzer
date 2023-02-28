@@ -67,7 +67,7 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 
 	// Get file extension to choose matching regex
 	ext := filepath.Ext(path)
-	var flagRegexes []model.FlagRegex
+	var flagRegexes []string
 	for _, extRegex := range model.LanguageRegexes {
 		regxp := regexp.MustCompile(extRegex.ExtensionRegex)
 		if regxp.Match([]byte(ext)) {
@@ -84,15 +84,15 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 	}
 
 	// Add default regex for flags in commentaries
-	flagRegexes = append(flagRegexes, model.FlagRegex{
-		FieldRegex: `fs:flag:(.+)`,
-	})
+	flagRegexes = append(flagRegexes,
+		`fs:flag:(.+)`,
+	)
 
 	results := []model.SearchResult{}
 
 	flagIndexes := [][]int{}
 	for _, flagRegex := range flagRegexes {
-		regxp := regexp.MustCompile(flagRegex.FieldRegex)
+		regxp := regexp.MustCompile(flagRegex)
 		flagLineIndexes := regxp.FindAllStringIndex(fileContentStr, -1)
 
 		for _, flagLineIndex := range flagLineIndexes {
