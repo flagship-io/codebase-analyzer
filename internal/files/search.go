@@ -104,14 +104,14 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 				if len(submatchIndex) < 3 {
 					logrus.WithFields(logrus.Fields{
 						"reason": "Did not find the flag key in file " + path + ". Code: " + submatch,
-					}).Error("Key not found, Flag not created")
+					}).Error("Key not found")
 					continue
 				}
 
 				if len(submatchIndex) < 6 {
 					logrus.WithFields(logrus.Fields{
 						"reason": "Did not find the flag default value in file " + path + " . Code: " + submatch,
-					}).Warn("Type unknown, Flag not created")
+					}).Warn("Type unknown")
 					flagIndexes = append(flagIndexes, []int{
 						flagLineIndex[0] + submatchIndex[2],
 						flagLineIndex[0] + submatchIndex[3],
