@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"path/filepath"
 	"regexp"
 	"strings"
 
 	"github.com/flagship-io/codebase-analyzer/internal/model"
 	"github.com/flagship-io/codebase-analyzer/pkg/config"
+	"github.com/sirupsen/logrus"
 	"github.com/thoas/go-funk"
 )
 
@@ -67,14 +67,14 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 
 	// Get file extension to choose matching regex
 	ext := filepath.Ext(path)
-	var flagRegexes []model.FlagRegex
+	var regexes []string
 	for _, extRegex := range model.LanguageRegexes {
-		regxp := regexp.MustCompile(extRegex.ExtensionRegex)
+		regxp := regexp.MustCompile(extRegex.FileExtension)
 		if regxp.Match([]byte(ext)) {
-			flagRegexes = extRegex.FlagRegexes
+			regexes = append(regexes, extRegex.Regexes...)
 		}
 	}
-	if len(flagRegexes) == 0 {
+	if len(regexes) == 0 {
 		resultChannel <- model.FileSearchResult{
 			File:    path,
 			Results: nil,
@@ -84,15 +84,15 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 	}
 
 	// Add default regex for flags in commentaries
-	flagRegexes = append(flagRegexes, model.FlagRegex{
-		FieldRegex: `fs:flag:(.+)`,
-	})
+	regexes = append(regexes,
+		`fs:flag:(.+)`,
+	)
 
 	results := []model.SearchResult{}
 
 	flagIndexes := [][]int{}
-	for _, flagRegex := range flagRegexes {
-		regxp := regexp.MustCompile(flagRegex.FieldRegex)
+	for _, regex := range regexes {
+		regxp := regexp.MustCompile(regex)
 		flagLineIndexes := regxp.FindAllStringIndex(fileContentStr, -1)
 
 		for _, flagLineIndex := range flagLineIndexes {
@@ -102,12 +102,16 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 
 			for _, submatchIndex := range submatchIndexes {
 				if len(submatchIndex) < 3 {
-					log.Printf("Did not find the flag key in file %s. Code : %s", path, submatch)
+					logrus.WithFields(logrus.Fields{
+						"reason": "Did not find the flag key in file " + path + ". Code: " + submatch,
+					}).Error("Key not found")
 					continue
 				}
 
 				if len(submatchIndex) < 6 {
-					log.Printf("Did not find the flag default value in file %s. Code : %s", path, submatch)
+					logrus.WithFields(logrus.Fields{
+						"reason": "Did not find the flag default value in file " + path + " . Code: " + submatch,
+					}).Warn("Type unknown")
 					flagIndexes = append(flagIndexes, []int{
 						flagLineIndex[0] + submatchIndex[2],
 						flagLineIndex[0] + submatchIndex[3],
