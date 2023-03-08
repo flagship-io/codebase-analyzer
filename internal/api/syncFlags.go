@@ -50,8 +50,6 @@ type Flag struct {
 	CodeLineHighlight int    `json:"codeLineHighlight"`
 }
 
-var counter = false
-
 // SendFlagsToAPI takes file search result & sends flag info to the API
 func SendFlagsToAPI(cfg *config.Config, results []model.FileSearchResult) (err error) {
 	flagUsageRequest := FlagUsageRequest{
@@ -166,11 +164,6 @@ func callAPI(cfg *config.Config, flagInfos FlagUsageRequest) error {
 
 	if err != nil {
 		return err
-	}
-
-	if resp.StatusCode == 401 && !counter {
-		counter = true
-		callAPI(cfg, flagInfos)
 	}
 
 	if resp.StatusCode != 201 {
