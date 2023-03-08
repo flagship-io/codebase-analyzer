@@ -23,7 +23,7 @@ func extractConfig() *config.Config {
 		Directory:             ".",
 		RepositoryURL:         os.Getenv("REPOSITORY_URL"),
 		RepositoryBranch:      "master",
-		FilesToExcludes:       []string{".git"},
+		FilesToExclude:        []string{".git"},
 		NbLineCodeEdges:       1,
 		SearchCustomRegex:     os.Getenv("CUSTOM_REGEX_JSON"),
 	}
@@ -41,7 +41,7 @@ func extractConfig() *config.Config {
 	}
 
 	if os.Getenv("FILES_TO_EXCLUDE") != "" {
-		cfg.FilesToExcludes = strings.Split(os.Getenv("FILES_TO_EXCLUDE"), ",")
+		cfg.FilesToExclude = strings.Split(os.Getenv("FILES_TO_EXCLUDE"), ",")
 	}
 
 	if os.Getenv("DIRECTORY") != "" {

@@ -13,7 +13,7 @@ type Config struct {
 	Directory             string
 	RepositoryURL         string
 	RepositoryBranch      string
-	FilesToExcludes       []string
+	FilesToExclude        []string
 	NbLineCodeEdges       int
 	SearchCustomRegex     string
 }

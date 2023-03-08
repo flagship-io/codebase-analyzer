@@ -15,7 +15,7 @@ func ExtractFlagsInfo(cfg *config.Config) ([]model.FileSearchResult, error) {
 	}
 
 	// List all files within the current directory
-	filePaths, err := files.ListFiles(cfg.Directory, cfg.FilesToExcludes)
+	filePaths, err := files.ListFiles(cfg.Directory, cfg.FilesToExclude)
 
 	if err != nil {
 		log.Panicf("Error occured when listing files : %v", err)
