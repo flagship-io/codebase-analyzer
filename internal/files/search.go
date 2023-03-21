@@ -27,8 +27,10 @@ func GetFlagType(defaultValue string) (string, string) {
 		flagType = "unknown"
 	}
 
-	if (defaultValue[0:1] == "\"" || defaultValue[0:1] == "'") && (defaultValue[len(defaultValue)-1:] == "\"" || defaultValue[len(defaultValue)-1:] == "'") {
-		flagType = "string"
+	if len(defaultValue) > 0 {
+		if (defaultValue[0:1] == "\"" || defaultValue[0:1] == "'") && (defaultValue[len(defaultValue)-1:] == "\"" || defaultValue[len(defaultValue)-1:] == "'") {
+			flagType = "string"
+		}
 	}
 
 	if funk.ContainsString([]string{"TRUE", "YES", "True"}, defaultValue) {
@@ -148,6 +150,10 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 		nbCharsWrapping := 5
 		if flagIndex[0] > nbCharsWrapping && flagIndex[1] < len(fileContentStr)-nbCharsWrapping {
 			keyWrapper = fileContentStr[flagIndex[0]-nbCharsWrapping : flagIndex[1]+nbCharsWrapping]
+		}
+
+		if key == "" || defaultValue_ == "" {
+			flagType = "unknown"
 		}
 
 		lineNumber := getLineFromPos(fileContentStr, flagIndex[0])
