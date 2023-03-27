@@ -58,6 +58,7 @@ codebase-analyzer
 
 ### Supported file languages
 - .cs .fs
+- .dart
 - .go
 - .java
 - .js .jsx

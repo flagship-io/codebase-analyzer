@@ -82,6 +82,12 @@ var LanguageRegexes = []LanguageRegex{
 			`\.GetFlag\((?:\s*["']([\w\-]+)['"]\s*,\s*(["'][^"]*['"]|[+-]?(?:\d*[.])?\d+|true|false|False|True)(?:\s*,\s*(?:true|false|\d+|"[^"]*"))?\s*\))?`,                    // SDK .NET V3
 		},
 	},
+	{
+		FileExtension: `\.dart$`,
+		Regexes: []string{
+			`getFlag[(](?:(?:\s*["'](.*)["']\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)])?`, // SDK Flutter V1-V2-V3
+		},
+	},
 }
 
 func AddCustomRegexes(customRegexJSON string) {

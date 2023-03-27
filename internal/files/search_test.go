@@ -240,6 +240,14 @@ func TestSearchFiles(t *testing.T) {
 				{name: "vipFeatureColor", lineNumber: 10, codeLineHighlight: 6},
 			},
 		},
+		{
+			filePath: "../../example/src/flutter/sample.dart",
+			flags: []flag{
+				{name: "displayVipFeature", lineNumber: 15, codeLineHighlight: 6},
+				{name: "backgroundColor", lineNumber: 16, codeLineHighlight: 6},
+				{name: "backgroundSize", lineNumber: 17, codeLineHighlight: 6},
+			},
+		},
 	}
 
 	resultChannel := make(chan model.FileSearchResult)
