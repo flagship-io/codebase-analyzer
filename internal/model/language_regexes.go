@@ -85,7 +85,7 @@ var LanguageRegexes = []LanguageRegex{
 	{
 		FileExtension: `\.dart$`,
 		Regexes: []string{
-			`getFlag[(](?:\s*["'](.*)["']\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)]`, // SDK Flutter V1-V2-V3
+			`getFlag[(](?:(?:\s*["'](.*)["']\s*,\s*(["'].*\s*[^"]*["']|[^)]*))\s*[)])?`, // SDK Flutter V1-V2-V3
 		},
 	},
 }
