@@ -4,7 +4,7 @@ import {useFsFlag} from "@flagship.io/react-sdk";
 export const MyReactComponent = () => {
     const backgroundColorFlag = useFsFlag("backgroundColor", "green")
     const btnColorFlag = useFsFlag("btnColor", "red")
-    const backgroundSize = useFsFlag("backgroundColor", 16)
+    const backgroundSize = useFsFlag("backgroundSize", 16)
     const showBtn = useFsFlag("showBtn", true)
 
     return (
