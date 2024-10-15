@@ -1,3 +1,4 @@
 example/src-js
 .env
 coverage
+codebase-analyzer

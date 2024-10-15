@@ -31,7 +31,7 @@ export ENVIRONMENT_ID=FLAGSHIP_ENVIRONMENT_ID
 export REPOSITORY_URL=https://gitlab.com/org/repo
 export REPOSITORY_BRANCH=master
 export DIRECTORY=./
-./code-analyzer
+./codebase-analyzer
 ```
 
 ### With Docker
@@ -41,6 +41,7 @@ docker run -v $(pwd)/your_repo:/your_repo -e FLAGSHIP_CLIENT_ID=FLAGSHIP_MANAGEM
 ```
 
 ### With Homebrew
+
 ```sh
 export FLAGSHIP_CLIENT_ID=FLAGSHIP_MANAGEMENT_API_CLIENT_ID
 export FLAGSHIP_CLIENT_SECRET=FLAGSHIP_MANAGEMENT_API_CLIENT_SECRET
@@ -57,6 +58,7 @@ codebase-analyzer
 ```
 
 ### Supported file languages
+
 - .cs .fs
 - .dart
 - .go
@@ -140,7 +142,7 @@ analyze_flag_references:
     ACCOUNT_ID: YOUR_ACCOUNT_ID
     ENVIRONMENT_ID: YOUR_ENVIRONMENT_ID
   script:
-    - /root/code-analyser
+    - /root/codebase-analyser
   only:
     - master
 ```
@@ -159,12 +161,11 @@ This repository needs go v1.13+ to work
 2. Create a .env file to customize your environment variable
 3. Run `go run *.go` in the example folder to run the code
 
-### Test 
+### Test
 
 ```
 make test
 ```
-
 
 ## Contributors
 
@@ -178,23 +179,25 @@ make test
 [Apache License.](https://github.com/flagship-io/codebase-analyzer/blob/master/LICENSE)
 
 ## About Flagship
+
 ​
 <img src="https://www.flagship.io/wp-content/uploads/Flagship-horizontal-black-wake-AB.png" alt="drawing" width="150"/>
 ​
 [Flagship by AB Tasty](https://www.flagship.io/) is a feature flagging platform for modern engineering and product teams. It eliminates the risks of future releases by separating code deployments from these releases :bulb: With Flagship, you have full control over the release process. You can:
 ​
+
 - Switch features on or off through remote config.
 - Automatically roll-out your features gradually to monitor performance and gather feedback from your most relevant users.
 - Roll back any feature should any issues arise while testing in production.
 - Segment users by granting access to a feature based on certain user attributes.
 - Carry out A/B tests by easily assigning feature variations to groups of users.
-​
-<img src="https://www.flagship.io/wp-content/uploads/demo-setup.png" alt="drawing" width="600"/>
-​
-Flagship also allows you to choose whatever implementation method works for you from our many available SDKs or directly through a REST API. Additionally, our architecture is based on multi-cloud providers that offer high performance and highly-scalable managed services.
-​
-**To learn more:**
-​
+  ​
+  <img src="https://www.flagship.io/wp-content/uploads/demo-setup.png" alt="drawing" width="600"/>
+  ​
+  Flagship also allows you to choose whatever implementation method works for you from our many available SDKs or directly through a REST API. Additionally, our architecture is based on multi-cloud providers that offer high performance and highly-scalable managed services.
+  ​
+  **To learn more:**
+  ​
 - [Solution overview](https://www.flagship.io/#showvideo) - A 5mn video demo :movie_camera:
 - [Documentation](https://docs.developers.flagship.io/) - Our dev portal with guides, how tos, API and SDK references
 - [Sign up for a free trial](https://www.flagship.io/sign-up/) - Create your free account
