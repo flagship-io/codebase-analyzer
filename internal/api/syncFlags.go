@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	log "github.com/sirupsen/logrus"
@@ -117,7 +117,7 @@ func generateAuthenticationToken(cfg *config.Config) (string, error) {
 		defer resp.Body.Close()
 
 		var result AuthResponse
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 
 		if err != nil {
 			log.Fatal("Error while reading body", err.Error())
@@ -129,7 +129,7 @@ func generateAuthenticationToken(cfg *config.Config) (string, error) {
 
 		return result.AccessToken, nil
 	} else {
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		return "", fmt.Errorf("error when calling Flagship authentication API. Status: %s, body: %s", resp.Status, string(body))
 	}
 }
@@ -167,7 +167,7 @@ func callAPI(cfg *config.Config, flagInfos FlagUsageRequest) error {
 	}
 
 	if resp.StatusCode != 201 {
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 
 		if err != nil {
 			log.Fatal("Error while reading body", err.Error())
