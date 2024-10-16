@@ -13,7 +13,7 @@ func AnalyzeCode(cfg *config.Config) error {
 	results, err := ExtractFlagsInfo(cfg)
 
 	if err != nil {
-		log.Fatalf("Error occured when parsing code files: %v", err)
+		log.Fatalf("Error occurred when parsing code files: %v", err)
 	}
 
 	for _, r := range results {

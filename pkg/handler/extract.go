@@ -18,7 +18,7 @@ func ExtractFlagsInfo(cfg *config.Config) ([]model.FileSearchResult, error) {
 	filePaths, err := files.ListFiles(cfg.Directory, cfg.FilesToExclude)
 
 	if err != nil {
-		log.Panicf("Error occured when listing files : %v", err)
+		log.Panicf("Error occurred when listing files : %v", err)
 	}
 
 	results := []model.FileSearchResult{}

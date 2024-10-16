@@ -267,9 +267,6 @@ func SearchFiles(cfg *config.Config, path string, resultChannel chan model.FileS
 	resultsSplit := matchFlagWithDefaultValue(flagMatches, defaultValueMatches)
 	combinedResults := append(resultsNotSplit, resultsSplit...)
 
-	res, _ := json.Marshal(combinedResults)
-	fmt.Println(string(res))
-
 	resultChannel <- model.FileSearchResult{
 		File:    path,
 		FileURL: getCodeURL(cfg, path, nil),
