@@ -59,17 +59,17 @@ codebase-analyzer
 
 ### Supported file languages
 
-- .cs .fs
-- .dart
+- .cs .fs (SDK V4 supported)
+- .dart (SDK V4 supported)
 - .go
 - .java
-- .js .jsx
-- .kt
+- .js .jsx (SDK V4 supported)
+- .kt (Android SDK V4 supported)
 - .m
-- .php
+- .php (SDK V4 supported)
 - .py
-- .swift
-- .ts .tsx
+- .swift (SDK V4 supported)
+- .ts .tsx (SDK V4 supported)
 - .vb
 
 ## Environment variables
