@@ -126,6 +126,13 @@ This environment variable should contain the directory you want to analyse
 - example : `DIRECTORY="."`
 - default value: "."
 
+### Custom regex to apply (optional)
+
+This environment variable should contain the regex for the pattern you want to analyze
+
+- example: `CUSTOM_REGEX_JSON="[{\"file_extension\":\".go?\",\"regexes\":[\"(?:Bool|String|Float64)Variation[(](?:\\\\s*[\\\"\\\\'](.*)[\\\"\\\\']\\\\s*,\\\\s*([\\\"\\\\'].*\\\\s*[^\\\"]*[\\\"\\\\']|[^)]*))\\\\s*[)]\"]}]"`
+- default value: ""
+
 ## Use with Gitlab CI
 
 You can use the code analyzer to push flags references to your Flagship environment when code is pushed to a specific branch or tag
